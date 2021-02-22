@@ -1,0 +1,6 @@
+---
+
+- src: git@github.com:mark-it-kracht/ansible-role-python.git
+  name: python
+  version: master
+  scm: git

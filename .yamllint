@@ -1,0 +1,17 @@
+---
+extends: default
+
+ignore: |
+  docker/*
+
+rules:
+  braces:
+    max-spaces-inside: -1
+    level: error
+  colons:
+    max-spaces-after: -1
+    level: error
+  line-length:
+    max: 180
+    level: warning
+  truthy: disable

@@ -1,0 +1,27 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[packages]
+robotframework = "~=3.1.2"
+robotframework-seleniumlibrary = "~=4.3.0"
+robotframework-jsonlibrary = "~=0.3.1"
+robotframework-requests = "~=0.6.6"
+axe-selenium-python = "*"
+ansible = "~=2.9.14"
+ansible-lint = "*"
+molecule = "*"
+molecule-docker = "*"
+molecule-vagrant = "*"
+python-vagrant = "*"
+docker = "*"
+
+[requires]
+python_version = "3.9"
+
+[pipenv]
+allow_prereleases = true
+
+[scripts]
+molecule = "${DIRNAME}/molecule-role.sh"

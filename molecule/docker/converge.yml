@@ -1,0 +1,61 @@
+---
+- name: Converge
+  hosts: all
+  become: yes
+  vars:
+    haproxy_node: master
+    haproxy_config:
+      - name: Backend
+        template: haproxy_custom.cfg.j2
+        frontend:
+          name: service
+          description: Reis Backend servers
+          ip: "{{ ansible_default_ipv4['address'] }}"
+        backend:
+          name: service_servers
+          prefix: service
+          servers:
+            - 127.0.0.1
+        keepalived:
+          name: backend_vip
+          router_id: 110
+
+  tasks:
+
+    - name: SELinux
+      yum:
+        name: policycoreutils-python
+        state: present
+      when: ansible_distribution_major_version|int <= 7
+
+    - name: SELinux
+      yum:
+        name: policycoreutils-python-utils
+        state: present
+      when: ansible_distribution_major_version|int >= 8
+
+    - name: Install rsyslog
+      yum:
+        name: rsyslog
+        state: present
+
+    - name: Start/enable rsyslog service
+      service:
+        name: rsyslog
+        state: started
+        enabled: yes
+
+    - name: Install firewalld
+      yum:
+        name: firewalld
+        state: present
+
+    - name: Start & enable firewalld service
+      service:
+        name: firewalld
+        state: started
+        enabled: yes
+  
+    - name: Execute haproy role
+      include_role:
+        name: haproxy

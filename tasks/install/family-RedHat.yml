@@ -1,0 +1,66 @@
+---
+
+- name: Download RPM signing key
+  get_url:
+    url: "{{ docker[ansible_distribution]['gpg_key'] }}"
+    dest: /tmp/docker.gpg
+    validate_certs: False
+  check_mode: no
+
+- name: Import RPM signing key
+  rpm_key:
+    state: present
+    key: /tmp/docker.gpg
+
+- name: Download repo definition
+  get_url:
+    url: "{{ docker[ansible_distribution]['repo_url'] }}"
+    dest: /etc/yum.repos.d/docker-ce.repo
+    mode: '0644'
+
+- name: Use alternative OS release
+  replace:
+    path: /etc/yum.repos.d/docker-ce.repo
+    regexp: '\$releasever'
+    replace: '{{ docker_os_release }}'
+  when: docker_os_release is defined
+
+- name: Remove obsolete Docker package
+  yum:
+    name: "{{ package }}"
+    state: absent
+  loop: "{{ docker_packages_remove }}"
+  loop_control:
+    loop_var: package
+  become: yes
+
+- name: Install Docker
+  yum:
+    name: "{{ package }}"
+    state: present
+  loop: "{{ docker_packages }}"
+  loop_control:
+    loop_var: package
+  become: yes
+
+- name: Start Docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+  become: yes
+
+- name: Install pip modules
+  pip:
+    name: "{{ package }}"
+  loop: "{{ docker_pip }}"
+  loop_control:
+    loop_var: package
+
+- name: Add users to docker group
+  user:
+    name: "{{ item }}"
+    groups: docker
+    append: yes
+  become: yes
+  loop: "{{ docker_users|default([]) }}"

@@ -1,0 +1,99 @@
+---
+
+- set_fact:
+    api_ssl:
+      debug: false
+      tls: true
+      tlscert: "{{ openssl_server_cacrt }}"
+      tlskey: "{{ openssl_server_key }}"
+      tlscacert: "{{ openssl_server_cacrt }}"
+      hosts:
+        - tcp://{{ docker_api_listen_address }}:{{ docker_api_listen_port }}
+
+
+
+# Docker API w/ SSL
+- block:
+
+    - name: Set docker_api_listen_port to {{ docker_api_listen_port_ssl }}
+      set_fact:
+        docker_api_listen_port: "{{ docker_api_listen_port_ssl }}"
+
+    - name: Define docker daemon command w/ SSL
+      set_fact:
+        docker_command: >-
+          ExecStart=/usr/bin/dockerd
+          -H fd://
+          -H tcp://{{ docker_api_listen_address }}:{{ docker_api_listen_port }}
+          --tlsverify
+          --tlscacert={{ openssl_server_cacrt }}
+          --tlscert={{ openssl_server_crt }}
+          --tlskey={{ openssl_server_key }}
+          --containerd=/run/containerd/containerd.sock
+
+  when: docker_api_ssl|bool
+
+# Docker API w/out SSL
+- block:
+
+    - name: Define docker daemon command w/out SSL
+      set_fact:
+        docker_command: >-
+          ExecStart=/usr/bin/dockerd
+          -H fd://
+          -H tcp://{{ docker_api_listen_address }}:{{ docker_api_listen_port }}
+          --containerd=/run/containerd/containerd.sock
+
+  when: not docker_api_ssl|bool
+
+- name: Copy default service file
+  copy:
+    src: /usr/lib/systemd/system/docker.service
+    dest: /etc/systemd/system/docker.service
+    remote_src: True
+    force: False
+
+- name: Strip socket when running in Docker (like molecule)
+  set_fact:
+    docker_command: "{{ docker_command | regex_replace('-H fd:// ', '') }}"
+  when: ansible_virtualization_type == "docker"
+
+- name: Activate Docker API through service file
+  replace:
+    path: /etc/systemd/system/docker.service
+    regexp: "^ExecStart=.*"
+    replace: "{{ docker_command }}"
+  notify:
+    - Restart docker
+
+- name: Open firewall if listen address is not 127.0.0.1
+  include_role:
+    name: firewall
+  vars:
+    firewall_rules:
+      - appname: Docker_API
+        appport: "{{ docker_api_listen_port }}"
+        appportweight: 50
+        intface: "eth0"
+        conntype: "tcp"
+  when:
+    - manage_firewall|bool
+    - docker_api_listen_address != '127.0.0.1'
+
+- name: Make sure .docker exists on Ansible/Tower host
+  file:
+    state: directory
+    path: ~/.docker
+    mode: '0700'
+  become: no
+  delegate_to: localhost
+
+- name: Fetch all openssl client keys
+  fetch:
+    src: "{{ item }}"
+    dest: ~/.docker/{{ item|basename|regex_replace('\.client', '') }}
+    flat: yes
+  loop:
+    - /etc/ssl/ca/ca-{{ inventory_hostname }}.crt
+    - /etc/ssl/private/{{ inventory_hostname }}.client.key
+    - /etc/ssl/certs/{{ inventory_hostname }}.client.crt

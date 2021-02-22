@@ -1,0 +1,38 @@
+---
+#
+# Install Docker CE
+
+- name: Include variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ role_path }}/vars/{{ ansible_distribution }}.yml"
+    - "{{ role_path }}/vars/family-{{ ansible_os_family }}.yml"
+    - "{{ role_path }}/vars/main.yml"
+
+- name: pre-install
+  include_tasks: "{{ item }}"
+  with_first_found:
+    - "{{ role_path }}/tasks/pre-install/{{ ansible_distribution }}.yml"
+    - "{{ role_path }}/tasks/pre-install/family-{{ ansible_os_family }}.yml"
+    - "{{ role_path }}/tasks/pre-install/main.yml"
+
+- name: install
+  include_tasks: "{{ item }}"
+  with_first_found:
+    - "{{ role_path }}/tasks/install/{{ ansible_distribution }}.yml"
+    - "{{ role_path }}/tasks/install/family-{{ ansible_os_family }}.yml"
+    - "{{ role_path }}/tasks/install/main.yml"
+
+- name: config
+  include_tasks: "{{ item }}"
+  with_first_found:
+    - "{{ role_path }}/tasks/config/{{ ansible_distribution }}.yml"
+    - "{{ role_path }}/tasks/config/family-{{ ansible_os_family }}.yml"
+    - "{{ role_path }}/tasks/config/main.yml"
+
+- name: post-config
+  include_tasks: "{{ item }}"
+  with_first_found:
+    - "{{ role_path }}/tasks/post-config/{{ ansible_distribution }}.yml"
+    - "{{ role_path }}/tasks/post-config/family-{{ ansible_os_family }}.yml"
+    - "{{ role_path }}/tasks/post-config/main.yml"

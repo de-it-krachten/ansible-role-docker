@@ -1,0 +1,71 @@
+---
+
+# Docker daemon config
+
+- name: Create /etc/docker directory
+  file:
+    path: /etc/docker
+    state: directory
+    mode: '0755'
+
+- name: Read Docker daemon file
+  command: cat /etc/docker/daemon.json
+  register: docker_daemon_content
+  changed_when: no
+  failed_when: no
+  check_mode: no
+
+- name: Get current daemon settings + required API settings
+  set_fact:
+    docker_daemon: "{{ docker_daemon_content.stdout | from_json }}"
+  when: docker_daemon_content.stdout|length > 0
+
+- debug: var=docker_api_tls
+
+- name: Get the required API settings
+  set_fact:
+    docker_daemon_api: "{{ docker_daemon_api_tls if docker_api_tls else docker_daemon_api_notls }}"
+
+- name: Merge existing and new settings
+  set_fact:
+    docker_daemon_options: "{{ docker_daemon | combine(docker_daemon_options) | combine(docker_daemon_api) }}"
+
+- name: Docker daemon file
+  copy:
+    dest: /etc/docker/daemon.json
+    content: "{{ docker_daemon_options | to_nice_json }}"
+    mode: '0644'
+  register: docker_daemon
+
+
+# Systemd
+
+- name: Create docker.service.d directory
+  file:
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+    mode: '0755'
+
+- name: Configure API access over tcp
+  become: yes
+  template:
+    src: "override.conf.j2"
+    dest: /etc/systemd/system/docker.service.d/override.conf
+  register: docker_service
+
+- name: Force systemd to reread configs
+  systemd:
+    daemon_reload: yes
+
+- name: Restart Docker when configuration changes
+  service:
+    name: docker
+    state: restarted
+  when: docker_daemon.changed|bool or docker_service.changed|bool
+
+## Swarm
+#
+#- name: Init docker swarm mode
+#  docker_swarm:
+#    state: "{{ 'present' if docker_swarm|bool else 'absent' }}"
+#    advertise_addr: "{{ docker_swarm_addr | default(ansible_enp0s8.ipv4.address) }}"
