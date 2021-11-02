@@ -13,6 +13,10 @@ docker:
   Fedora:
     repo_url: https://download.docker.com/linux/fedora/docker-ce.repo
     gpg_key: https://download.docker.com/linux/fedora/gpg
+  Debian:
+    gpg_key: https://download.docker.com/linux/debian/gpg
+  Ubuntu:
+    gpg_key: https://download.docker.com/linux/ubuntu/gpg
 
 docker_swarm: false
 docker_api_listen_address: 127.0.0.1

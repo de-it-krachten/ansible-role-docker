@@ -1,0 +1,13 @@
+---
+
+- name: Install prerequisites
+  package:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
