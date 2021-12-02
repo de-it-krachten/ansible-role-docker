@@ -1,13 +1,16 @@
 ---
 
-- name: Download RPM signing key
+- name: Download APT signing key
   get_url:
     url: "{{ docker[ansible_distribution]['gpg_key'] }}"
     dest: /tmp/docker.gpg
     validate_certs: False
+  environment:
+    https_proxy: "{{ https_proxy | default('') }}"
+    http_proxy: "{{ http_proxy | default('') }}"
   check_mode: no
 
-- name: Import RPM signing key
+- name: Import APT signing key
   apt_key:
     file: /tmp/docker.gpg
     state: present
@@ -37,6 +40,9 @@
 - name: Install pip modules
   pip:
     name: "{{ package }}"
+  environment:
+    https_proxy: "{{ https_proxy | default('') }}"
+    http_proxy: "{{ http_proxy | default('') }}"
   loop: "{{ docker_pip }}"
   loop_control:
     loop_var: package
