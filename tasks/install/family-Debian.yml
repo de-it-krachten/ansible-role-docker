@@ -40,6 +40,9 @@
 - name: Install pip modules
   pip:
     name: "{{ package }}"
+  environment:
+    https_proxy: "{{ https_proxy | default('') }}"
+    http_proxy: "{{ http_proxy | default('') }}"
   loop: "{{ docker_pip }}"
   loop_control:
     loop_var: package
