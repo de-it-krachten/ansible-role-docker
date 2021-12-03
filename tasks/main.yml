@@ -2,7 +2,8 @@
 #
 # Install Docker CE
 
-- debug:
+- name: Show OS specifics
+  debug:
     msg:
       - "ansible_distribution: {{ ansible_distribution }}"
       - "ansible_distribution_major_version: {{ ansible_distribution_major_version }}"

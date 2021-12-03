@@ -6,10 +6,10 @@ driver:
   provider:
     name: Vbox
 platforms:
-  - name: centos7
-    box: generic/centos7
-    memory: 512
-    cpus: 1
+  # - name: centos7
+  #   box: generic/centos7
+  #   memory: 512
+  #   cpus: 1
   - name: centos8
     box: generic/centos8
     memory: 512
@@ -24,6 +24,10 @@ platforms:
     cpus: 1
   - name: debian10
     box: generic/debian10
+    memory: 512
+    cpus: 1
+  - name: debian11
+    box: generic/debian11
     memory: 512
     cpus: 1
 provisioner:

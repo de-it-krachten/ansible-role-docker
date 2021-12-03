@@ -68,6 +68,6 @@ docker_packages_remove:
   - docker-latest
   - docker-latest-logrotate
   - docker-logrotate
-#  - docker-selinux
-#  - docker-engine-selinux
+  # - docker-selinux
+  # - docker-engine-selinux
   - docker-engine

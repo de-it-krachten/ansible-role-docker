@@ -6,20 +6,20 @@
       - yum-utils
       - device-mapper-persistent-data
       - lvm2
-#      - gcc
-#      - glibc-devel
-#      - python
-#      - python-libs
-#      - python-devel
-#      - python-pip
+      # - gcc
+      # - glibc-devel
+      # - python
+      # - python-libs
+      # - python-devel
+      # - python-pip
     state: present
 
-#- name: Get pip version
-#  command: pip --version
-#  changed_when: false
-#  check_mode: no
-#  register: pip
+# - name: Get pip version
+#   command: pip --version
+#   changed_when: false
+#   check_mode: no
+#   register: pip
 #
-##- name: Upgrade pip if version > 19.0.0
-#  command: pip install --upgrade pip
-#  when: pip.stdout.split(' ')[1] is version('19.0.0', '<')
+# - name: Upgrade pip if version > 19.0.0
+#   command: pip install --upgrade pip
+#   when: pip.stdout.split(' ')[1] is version('19.0.0', '<')

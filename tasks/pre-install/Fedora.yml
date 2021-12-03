@@ -1,3 +1,5 @@
+---
+
 - name: Fedora >= 31 requirements
   block:
 
@@ -5,7 +7,7 @@
       dnf:
         name: grubby
         state: present
-    
+
     - name: Check if systemd.unified_cgroup_hierarchy=0 is set in kernelopts
       command: grep -Eq '^kernelopts=.* systemd\.unified_cgroup_hierarchy=0' /boot/grub2/grubenv
       register: grubenv_has_cgroup_exception
@@ -13,12 +15,12 @@
       ignore_errors: yes
       changed_when: no
       failed_when: grubenv_has_cgroup_exception.rc > 1
-    
+
     - name: Configure systemd.unified_cgroup_hierarchy=0 in kernelopts
       command: grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
-      #notify: reboot machine
+      # notify: reboot machine
       when: grubenv_has_cgroup_exception.rc != 0
 
   when:
     - ansible_distribution == "Fedora"
-    - ansible_distribution_major_version >= '31'
+    - ansible_distribution_major_version|int >= 31

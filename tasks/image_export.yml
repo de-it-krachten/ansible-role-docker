@@ -15,6 +15,9 @@
     image_id: "{{ images['images'][0]['Id'][7:19] }}"
     image_file: "{{ docker_image_file if docker_image_file is defined else docker_image_name }}"
 
-- name: Export the image to a compressed tar ball
+- name: Export the image to a compressed tar ball  # noqa no-changed-when
   shell:
+    set -o pipefail
     docker save {{ image_id }} | gzip > /tmp/{{ docker_image_file }}.{{ image_id }}.tgz
+  args:
+    executable: /bin/bash

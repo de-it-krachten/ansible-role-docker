@@ -1,6 +1,7 @@
 ---
 
-- set_fact:
+- name: Define TLS variables
+  set_fact:
     api_ssl:
       debug: false
       tls: true
@@ -9,8 +10,6 @@
       tlscacert: "{{ openssl_server_cacrt }}"
       hosts:
         - tcp://{{ docker_api_listen_address }}:{{ docker_api_listen_port }}
-
-
 
 # Docker API w/ SSL
 - block:
@@ -52,6 +51,7 @@
     dest: /etc/systemd/system/docker.service
     remote_src: True
     force: False
+    mode: "0644"
 
 - name: Strip socket when running in Docker (like molecule)
   set_fact:
