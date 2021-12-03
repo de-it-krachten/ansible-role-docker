@@ -5,6 +5,9 @@
     url: "{{ docker[ansible_distribution]['gpg_key'] }}"
     dest: /tmp/docker.gpg
     validate_certs: False
+  environment:
+    https_proxy: "{{ https_proxy | default('') }}"
+    http_proxy: "{{ http_proxy | default('') }}"
   check_mode: no
 
 - name: Import RPM signing key
