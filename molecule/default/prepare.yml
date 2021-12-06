@@ -1,5 +1,5 @@
 ---
-- name: Converge
+- name: Prepare
   hosts: all
   tasks:
 
@@ -9,7 +9,3 @@
         cache_valid_time: 1
       become: yes
       when: ansible_os_family == 'Debian'
-
-    - name: "Include ansible-role-docker"
-      include_role:
-        name: "ansible-role-docker"
