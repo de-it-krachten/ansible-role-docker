@@ -56,6 +56,17 @@
     mode: '0644'
   register: docker_service
 
+- name: Configure docker to use HTTP proxy
+  copy:
+    content: |
+      [Service]
+      Environment="HTTP_PROXY=http://{{ proxy_ip }}:{{ proxy_port }}/"
+      Environment="HTTPS_PROXY=http://{{ proxy_ip }}:{{ proxy_port }}/"
+    dest: /etc/systemd/system/docker.service.d/http-proxy.conf
+    mode: "0644"
+  when: docker_proxy_ip is defined and docker_proxy_port is defined
+  register: docker_proxy
+
 - name: Force systemd to reread configs
   systemd:
     daemon_reload: yes
@@ -64,7 +75,8 @@
   service:
     name: docker
     state: restarted
-  when: docker_daemon.changed|bool or docker_service.changed|bool  # noqa no-handler
+  when: docker_daemon.changed|bool or docker_service.changed|bool or docker_proxy.changed|bool  # noqa no-handler
+
 
 # Swarm
 #
