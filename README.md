@@ -1,5 +1,28 @@
----
+[![CI](https://github.com/de-it-krachten/ansible-role-docker/workflows/CI/badge.svg?event=push)](https://github.com/de-it-krachten/ansible-role-docker/actions?query=workflow%3ACI)
 
+
+# ansible-role-docker
+
+Installs docker
+
+
+Platforms
+--------------
+
+Supported platforms
+
+- CentOS 7
+- CentOS 8
+- Ubuntu 18.04 LTS
+- Ubuntu 20.04 LTS
+- Debian 10 (Buster)
+- Debian 11 (Bullseye)
+
+
+
+Role Variables
+--------------
+<pre><code>
 # repo definition and/or GPG file
 docker:
   CentOS:
@@ -62,7 +85,7 @@ docker_daemon_api_tls:
     - unix://
     - tcp://{{ docker_api_listen_address }}:{{ docker_api_listen_port_tls }}
 
-# Pip package
+# Pip package for 
 docker_pip:
   - docker
 
@@ -89,3 +112,19 @@ docker_packages_remove:
   # - docker-selinux
   # - docker-engine-selinux
   - docker-engine
+</pre></code>
+
+
+Example Playbook
+----------------
+
+<pre><code>
+
+- name: Converge
+  hosts: all
+  tasks:
+
+    - name: "Include role 'ansible-role-docker'"
+      include_role:
+        name: "ansible-role-docker"
+</pre></code>
