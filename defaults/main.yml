@@ -11,6 +11,12 @@ docker:
   OracleLinux:
     repo_url: https://download.docker.com/linux/centos/docker-ce.repo
     gpg_key: https://download.docker.com/linux/centos/gpg
+  Rocky:
+    repo_url: https://download.docker.com/linux/centos/docker-ce.repo
+    gpg_key: https://download.docker.com/linux/centos/gpg
+  AlmaLinux:
+    repo_url: https://download.docker.com/linux/centos/docker-ce.repo
+    gpg_key: https://download.docker.com/linux/centos/gpg
   Fedora:
     repo_url: https://download.docker.com/linux/fedora/docker-ce.repo
     gpg_key: https://download.docker.com/linux/fedora/gpg
