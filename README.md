@@ -5,7 +5,6 @@
 
 Installs docker
 
-
 Platforms
 --------------
 
@@ -13,10 +12,12 @@ Supported platforms
 
 - CentOS 7
 - CentOS 8
-- Ubuntu 18.04 LTS
-- Ubuntu 20.04 LTS
+- RockyLinux 8
+- AlmaLinux 8
 - Debian 10 (Buster)
 - Debian 11 (Bullseye)
+- Ubuntu 18.04 LTS
+- Ubuntu 20.04 LTS
 
 
 
@@ -78,14 +79,14 @@ docker_daemon_api_notls:
 docker_daemon_api_tls:
   debug: false
   tls: true
-  tlscert: "{{ openssl_server_cacrt }}"
-  tlskey: "{{ openssl_server_key }}"
-  tlscacert: "{{ openssl_server_cacrt }}"
+  tlscert: {{ openssl_server_cacrt }}
+  tlskey: {{ openssl_server_key }}
+  tlscacert: {{ openssl_server_cacrt }}
   hosts:
     - unix://
     - tcp://{{ docker_api_listen_address }}:{{ docker_api_listen_port_tls }}
 
-# Pip package for 
+# Pip package
 docker_pip:
   - docker
 
@@ -119,12 +120,11 @@ Example Playbook
 ----------------
 
 <pre><code>
-
-- name: Converge
+- name: sample playbook for role 'docker'
   hosts: all
+  vars:
   tasks:
-
-    - name: "Include role 'ansible-role-docker'"
+    - name: Include role 'docker'
       include_role:
-        name: "ansible-role-docker"
+        name: docker
 </pre></code>
