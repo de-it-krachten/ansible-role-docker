@@ -1,6 +1,8 @@
 ---
 
+# ---------------------------------------------------------
 # Docker daemon config
+# ---------------------------------------------------------
 
 - name: Create /etc/docker directory
   file:
@@ -40,7 +42,9 @@
   register: docker_daemon
 
 
+# ---------------------------------------------------------
 # Systemd
+# ---------------------------------------------------------
 
 - name: Create docker.service.d directory
   file:
@@ -78,9 +82,42 @@
   when: docker_daemon.changed|bool or docker_service.changed|bool or docker_proxy.changed|bool  # noqa no-handler
 
 
+
 # Swarm
 #
 # - name: Init docker swarm mode
 #   docker_swarm:
 #     state: "{{ 'present' if docker_swarm|bool else 'absent' }}"
 #     advertise_addr: "{{ docker_swarm_addr | default(ansible_enp0s8.ipv4.address) }}"
+
+
+# ---------------------------------------------------------
+# Networking
+# ---------------------------------------------------------
+
+- block:
+
+    - name: Populate service facts
+      service_facts:
+
+    - name: Activate IP forwarding
+      sysctl:
+        name: net.ipv4.ip_forward
+        value: '1'
+        sysctl_set: yes
+        sysctl_file: /etc/sysctl.d/99-docker.conf
+        state: present
+        reload: yes
+      when: ansible_facts.services['firewalld.service'] is defined
+
+    - name: Enable firewalld forwarding
+      command: >-
+        firewall-cmd --permanent --direct --add-rule ipv4 filter FORWARD 0 -d 0.0.0.0/0 -j ACCEPT
+      when: ansible_facts.services['firewalld.service'] is defined
+
+    - name: Reload firewalld configuration
+      command: firewall-cmd --reload
+      changed_when: false
+      when: ansible_facts.services['firewalld.service'] is defined
+
+  when: docker_networking_outbound|bool
