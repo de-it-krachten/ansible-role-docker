@@ -42,6 +42,14 @@ docker_install: true
 docker_daemon: {}
 docker_daemon_options: {}
 
+#-----------------------------------------
+# Docker networking
+#-----------------------------------------
+
+# Enable networking from container -> outsite-world
+docker_networking_outbound: false
+
+
 docker_api: false
 docker_api_tls: false
 

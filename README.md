@@ -11,7 +11,6 @@ Platforms
 Supported platforms
 
 - CentOS 7
-- CentOS 8
 - RockyLinux 8
 - AlmaLinux 8
 - Debian 10 (Buster)
@@ -33,6 +32,12 @@ docker:
     repo_url: https://download.docker.com/linux/centos/docker-ce.repo
     gpg_key: https://download.docker.com/linux/centos/gpg
   OracleLinux:
+    repo_url: https://download.docker.com/linux/centos/docker-ce.repo
+    gpg_key: https://download.docker.com/linux/centos/gpg
+  Rocky:
+    repo_url: https://download.docker.com/linux/centos/docker-ce.repo
+    gpg_key: https://download.docker.com/linux/centos/gpg
+  AlmaLinux:
     repo_url: https://download.docker.com/linux/centos/docker-ce.repo
     gpg_key: https://download.docker.com/linux/centos/gpg
   Fedora:
@@ -60,6 +65,14 @@ docker_install: true
 docker_daemon: {}
 docker_daemon_options: {}
 
+#-----------------------------------------
+# Docker networking
+#-----------------------------------------
+
+# Enable networking from container -> outsite-world
+docker_networking_outbound: false
+
+
 docker_api: false
 docker_api_tls: false
 
@@ -79,9 +92,9 @@ docker_daemon_api_notls:
 docker_daemon_api_tls:
   debug: false
   tls: true
-  tlscert: {{ openssl_server_cacrt }}
-  tlskey: {{ openssl_server_key }}
-  tlscacert: {{ openssl_server_cacrt }}
+  tlscert: "{{ openssl_server_cacrt }}"
+  tlskey: "{{ openssl_server_key }}"
+  tlscacert: "{{ openssl_server_cacrt }}"
   hosts:
     - unix://
     - tcp://{{ docker_api_listen_address }}:{{ docker_api_listen_port_tls }}
