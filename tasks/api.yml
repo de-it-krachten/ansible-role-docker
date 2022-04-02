@@ -70,12 +70,9 @@
   include_role:
     name: firewall
   vars:
-    firewall_rules:
-      - appname: Docker_API
-        appport: "{{ docker_api_listen_port }}"
-        appportweight: 50
-        intface: "eth0"
-        conntype: "tcp"
+    firewall_ports:
+      - port: "{{ docker_api_listen_port }}"
+        proto: tcp
   when:
     - manage_firewall|bool
     - docker_api_listen_address != '127.0.0.1'
