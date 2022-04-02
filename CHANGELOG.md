@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.1.0...v1.1.1) (2022-04-02)
+
+
+### Bug Fixes
+
+* code fixes for API/TLS activation ([5c0566e](https://github.com/de-it-krachten/ansible-role-docker/commit/5c0566e98b1daf8d993ba1c4bce3cd213d306f11))
+
 # [1.1.0](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.0.0...v1.1.0) (2022-02-26)
 
 
