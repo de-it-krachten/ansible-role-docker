@@ -1,3 +1,15 @@
+# [1.2.0](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.1.1...v1.2.0) (2022-05-10)
+
+
+### Bug Fixes
+
+* remove obsolete roles from meta/requirements.yml ([d09dc46](https://github.com/de-it-krachten/ansible-role-docker/commit/d09dc46f2ff706d0e67cd5d22528097cbbb9df73))
+
+
+### Features
+
+* add support for Ubuntu 22.04 ([ea6b439](https://github.com/de-it-krachten/ansible-role-docker/commit/ea6b439dc1af1ed4921080b8f60e54f1662010d5))
+
 ## [1.1.1](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.1.0...v1.1.1) (2022-04-02)
 
 
