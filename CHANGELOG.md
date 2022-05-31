@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.2.0...v1.2.1) (2022-05-31)
+
+
+### Bug Fixes
+
+* API only started when requested ([36a3f82](https://github.com/de-it-krachten/ansible-role-docker/commit/36a3f826581ed77598e64ece6c514c333e14fc01))
+
 # [1.2.0](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.1.1...v1.2.0) (2022-05-10)
 
 
