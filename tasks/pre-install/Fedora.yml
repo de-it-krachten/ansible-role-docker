@@ -9,18 +9,15 @@
         state: present
 
     - name: Check if systemd.unified_cgroup_hierarchy=0 is set in kernelopts
-      command: grep -Eq '^kernelopts=.* systemd\.unified_cgroup_hierarchy=0' /boot/grub2/grubenv
+      command: grep -Eq 'GRUB_CMDLINE_LINUX=.*systemd\.unified_cgroup_hierarchy=0' /etc/default/grub
       register: grubenv_has_cgroup_exception
       check_mode: no
-      ignore_errors: yes
+      failed_when: no
       changed_when: no
-      failed_when: grubenv_has_cgroup_exception.rc > 1
 
-    - name: Configure systemd.unified_cgroup_hierarchy=0 in kernelopts
-      command: grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
-      # notify: reboot machine
-      when: grubenv_has_cgroup_exception.rc != 0
+    - name: Remove previously configured systemd.unified_cgroup_hierarchy=0 in kernelopts
+      command: grubby --update-kernel=ALL --remove-args="systemd.unified_cgroup_hierarchy=0"
+      when: grubenv_has_cgroup_exception.rc == 0
 
   when:
     - ansible_distribution == "Fedora"
-    - ansible_distribution_major_version|int >= 31

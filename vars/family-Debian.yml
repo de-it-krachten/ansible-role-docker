@@ -1,14 +1,28 @@
 ---
 
+# OS release
 docker_os_release: "{{ ansible_distribution_major_version }}"
+
+# Docker CE packages
 docker_packages:
   - docker-ce
 
+# Docker URL 
 docker_repo_url: https://download.docker.com/linux
+
+# Docker release channel
 docker_apt_release_channel: stable
+
+# Docker architecture
 docker_apt_arch: amd64
+
+# Docker APT repostory
 docker_apt_repository: >-
   deb [arch={{ docker_apt_arch }}] {{ docker_repo_url }}/{{ ansible_distribution | lower }}
   {{ ansible_distribution_release }} {{ docker_apt_release_channel }}
+
+# APT key error ignore?
 docker_apt_ignore_key_error: true
+
+# APT GPG url
 docker_apt_gpg_key: "{{ docker_repo_url }}/{{ ansible_distribution | lower }}/gpg"
