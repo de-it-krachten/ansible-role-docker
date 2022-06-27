@@ -1,5 +1,8 @@
 ---
 
+# OS release
 docker_os_release: "{{ ansible_distribution_major_version }}"
+
+# Docker CE packages
 docker_packages:
   - docker-ce

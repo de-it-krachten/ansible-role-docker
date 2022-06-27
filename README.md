@@ -3,28 +3,32 @@
 
 # ansible-role-docker
 
-Installs docker
+Installs & configures Docker CE   
 
-Platforms
---------------
+
+## Platforms
 
 Supported platforms
 
 - Red Hat Enterprise Linux 7<sup>1</sup>
 - Red Hat Enterprise Linux 8<sup>1</sup>
 - CentOS 7
+- CentOS 8
 - RockyLinux 8
 - AlmaLinux 8<sup>1</sup>
 - Debian 10 (Buster)
 - Debian 11 (Bullseye)
 - Ubuntu 18.04 LTS
 - Ubuntu 20.04 LTS
+- Ubuntu 22.04 LTS
+- Fedora 35
+- Fedora 36
 
 Note:
 <sup>1</sup> : no automated testing is performed on these platforms
 
-Role Variables
---------------
+## Role Variables
+### defaults/main.yml
 <pre><code>
 # repo definition and/or GPG file
 docker:
@@ -75,7 +79,7 @@ docker_daemon_options: {}
 # Enable networking from container -> outsite-world
 docker_networking_outbound: false
 
-
+# Docker API  
 docker_api: false
 docker_api_tls: false
 
@@ -131,10 +135,50 @@ docker_packages_remove:
   - docker-engine
 </pre></code>
 
+### vars/family-RedHat.yml
+<pre><code>
+# OS release
+docker_os_release: "{{ ansible_distribution_major_version }}"
 
-Example Playbook
-----------------
+# Docker CE packages
+docker_packages:
+  - docker-ce
+</pre></code>
 
+### vars/family-Debian.yml
+<pre><code>
+# OS release
+docker_os_release: "{{ ansible_distribution_major_version }}"
+
+# Docker CE packages
+docker_packages:
+  - docker-ce
+
+# Docker URL 
+docker_repo_url: https://download.docker.com/linux
+
+# Docker release channel
+docker_apt_release_channel: stable
+
+# Docker architecture
+docker_apt_arch: amd64
+
+# Docker APT repostory
+docker_apt_repository: >-
+  deb [arch={{ docker_apt_arch }}] {{ docker_repo_url }}/{{ ansible_distribution | lower }}
+  {{ ansible_distribution_release }} {{ docker_apt_release_channel }}
+
+# APT key error ignore?
+docker_apt_ignore_key_error: true
+
+# APT GPG url
+docker_apt_gpg_key: "{{ docker_repo_url }}/{{ ansible_distribution | lower }}/gpg"
+</pre></code>
+
+
+
+## Example Playbook
+### molecule/default/converge.yml
 <pre><code>
 - name: sample playbook for role 'docker'
   hosts: all
