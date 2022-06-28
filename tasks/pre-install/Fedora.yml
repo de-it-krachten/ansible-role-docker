@@ -1,6 +1,13 @@
 ---
 
-- name: Fedora >= 31 requirements
+- name: Check if systemd.unified_cgroup_hierarchy=0 is set in kernelopts
+  command: grep -Eq 'GRUB_CMDLINE_LINUX=.*systemd\.unified_cgroup_hierarchy=0' /etc/default/grub
+  register: grubenv_has_cgroup_exception
+  check_mode: no
+  failed_when: no
+  changed_when: no
+
+- name: Enable cgroups v2 when previously disabled
   block:
 
     - name: Install grubby
@@ -8,16 +15,25 @@
         name: grubby
         state: present
 
-    - name: Check if systemd.unified_cgroup_hierarchy=0 is set in kernelopts
-      command: grep -Eq 'GRUB_CMDLINE_LINUX=.*systemd\.unified_cgroup_hierarchy=0' /etc/default/grub
-      register: grubenv_has_cgroup_exception
-      check_mode: no
-      failed_when: no
-      changed_when: no
-
-    - name: Remove previously configured systemd.unified_cgroup_hierarchy=0 in kernelopts
+    - name: Remove previously configured systemd.unified_cgroup_hierarchy=0 in kernelopts  # noqa no-changed-when
       command: grubby --update-kernel=ALL --remove-args="systemd.unified_cgroup_hierarchy=0"
-      when: grubenv_has_cgroup_exception.rc == 0
 
   when:
-    - ansible_distribution == "Fedora"
+    - grubenv_has_cgroup_exception.rc == 0
+    - docker_cgroups_v2|bool
+
+
+- name: Disable cgroups v2
+  block:
+
+    - name: Install grubby
+      dnf:
+        name: grubby
+        state: present
+
+    - name: Add systemd.unified_cgroup_hierarchy=0 in kernelopts  # noqa no-changed-when
+      command: grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
+
+  when:
+    - grubenv_has_cgroup_exception.rc == 1
+    - not docker_cgroups_v2|bool
