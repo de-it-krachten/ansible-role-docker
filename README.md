@@ -30,6 +30,10 @@ Note:
 ## Role Variables
 ### defaults/main.yml
 <pre><code>
+#-----------------------------------------
+# Docker package repository
+#-----------------------------------------
+
 # repo definition and/or GPG file
 docker:
   CentOS:
@@ -71,6 +75,15 @@ docker_api_listen_port_tls: 2376
 docker_install: true
 docker_daemon: {}
 docker_daemon_options: {}
+
+
+#-----------------------------------------
+# Docker OS settings
+#-----------------------------------------
+
+# Should cgroups v2 be enabled (Fedora only)
+docker_cgroups_v2: false
+
 
 #-----------------------------------------
 # Docker networking
