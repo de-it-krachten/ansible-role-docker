@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.2.2...v1.2.3) (2022-06-28)
+
+
+### Bug Fixes
+
+* disable cgroups v2 on Fedora (again) ([924d79e](https://github.com/de-it-krachten/ansible-role-docker/commit/924d79e90b9933b7e48433857a2868a0a467576b))
+
 ## [1.2.2](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.2.1...v1.2.2) (2022-06-27)
 
 
