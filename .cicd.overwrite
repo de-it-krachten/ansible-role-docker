@@ -6,6 +6,3 @@ generic:
   role_short: docker
   role_description: |
     Installs & configures Docker CE   
-
-github:
-  fail_fast: false
