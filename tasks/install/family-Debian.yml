@@ -46,6 +46,7 @@
   loop: "{{ docker_pip }}"
   loop_control:
     loop_var: package
+  tags: molecule-idempotence-notest
 
 - name: Add users to docker group
   user:
