@@ -2,6 +2,7 @@
 
 - name: Converge
   hosts: all
+  become: "{{ molecule['converge']['become'] | default('yes') }}"
   vars:
   tasks:
     - name: Include role 'ansible-role-docker'
