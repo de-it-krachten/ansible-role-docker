@@ -12,7 +12,8 @@
         - tcp://{{ docker_api_listen_address }}:{{ docker_api_listen_port }}
 
 # Docker API w/ SSL
-- block:
+- name: Docker API w/ SSL
+  block:
 
     - name: Set docker_api_listen_port to {{ docker_api_listen_port_ssl }}
       set_fact:
@@ -33,7 +34,8 @@
   when: docker_api_ssl|bool
 
 # Docker API w/out SSL
-- block:
+- name: Docker API w/out SSL
+  block:
 
     - name: Define docker daemon command w/out SSL
       set_fact:

@@ -31,7 +31,8 @@
 # API
 # ---------------------------------------------------------
 
-- block:
+- name: Define API settings
+  block:
 
     - name: Show if API should use TLS
       debug:
@@ -113,7 +114,8 @@
 # Networking
 # ---------------------------------------------------------
 
-- block:
+- name: Configure networking
+  block:
 
     - name: Populate service facts
       service_facts:
