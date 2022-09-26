@@ -116,3 +116,11 @@ docker_packages_remove:
   # - docker-selinux
   # - docker-engine-selinux
   - docker-engine
+
+# Debian requires diferent naming from Ansible
+docker_arch_mapping:
+  armv6l: "armhf"
+  armv7l: "armhf"
+  aarch64: "arm64"
+  x86_64: "amd64"
+  i386: "i386"
