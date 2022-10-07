@@ -5,6 +5,17 @@
 
 Installs & configures Docker CE
 
+
+## Dependencies
+
+#### Roles
+None
+
+#### Collections
+- community.general
+- ansible.posix
+- community.docker
+
 ## Platforms
 
 Supported platforms
@@ -94,7 +105,7 @@ docker_cgroups_v2: false
 # Enable networking from container -> outsite-world
 docker_networking_outbound: false
 
-# Docker API  
+# Docker API
 docker_api: false
 docker_api_tls: false
 
@@ -148,7 +159,16 @@ docker_packages_remove:
   # - docker-selinux
   # - docker-engine-selinux
   - docker-engine
+
+# Debian requires diferent naming from Ansible
+docker_arch_mapping:
+  armv6l: "armhf"
+  armv7l: "armhf"
+  aarch64: "arm64"
+  x86_64: "amd64"
+  i386: "i386"
 </pre></code>
+
 
 ### vars/family-RedHat.yml
 <pre><code>
@@ -169,14 +189,14 @@ docker_os_release: "{{ ansible_distribution_major_version }}"
 docker_packages:
   - docker-ce
 
-# Docker URL 
+# Docker URL
 docker_repo_url: https://download.docker.com/linux
 
 # Docker release channel
 docker_apt_release_channel: stable
 
 # Docker architecture
-docker_apt_arch: amd64
+docker_apt_arch: "{{ docker_arch_mapping[ansible_architecture] }}"
 
 # Docker APT repostory
 docker_apt_repository: >-
@@ -200,6 +220,6 @@ docker_apt_gpg_key: "{{ docker_repo_url }}/{{ ansible_distribution | lower }}/gp
   become: "{{ molecule['converge']['become'] | default('yes') }}"
   tasks:
     - name: Include role 'docker'
-      include_role:
+      ansible.builtin.include_role:
         name: docker
 </pre></code>
