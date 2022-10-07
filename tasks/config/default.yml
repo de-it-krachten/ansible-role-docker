@@ -5,25 +5,26 @@
 # ---------------------------------------------------------
 
 - name: Create /etc/docker directory
-  file:
+  ansible.builtin.file:
     path: /etc/docker
     state: directory
     mode: '0755'
 
 - name: Read Docker daemon file
-  command: cat /etc/docker/daemon.json
+  # possible ambiguous replacement: command : ansible.builtin.command | community.ciscosmb.command | community.routeros.command
+  ansible.builtin.command: cat /etc/docker/daemon.json
   register: docker_daemon_content
   changed_when: no
   failed_when: no
   check_mode: no
 
 - name: Get current daemon settings + required API settings
-  set_fact:
+  ansible.builtin.set_fact:
     docker_daemon: "{{ docker_daemon_content.stdout | from_json }}"
-  when: docker_daemon_content.stdout|length > 0
+  when: docker_daemon_content.stdout | length > 0
 
 - name: Merge existing and new settings
-  set_fact:
+  ansible.builtin.set_fact:
     docker_daemon_options: "{{ docker_daemon | combine(docker_daemon_options) }}"
 
 
@@ -32,21 +33,20 @@
 # ---------------------------------------------------------
 
 - name: Define API settings
+  when: docker_api | bool
   block:
 
     - name: Show if API should use TLS
-      debug:
+      ansible.builtin.debug:
         var: docker_api_tls
 
     - name: Get the required API settings
-      set_fact:
+      ansible.builtin.set_fact:
         docker_daemon_api: "{{ docker_daemon_api_tls if docker_api_tls else docker_daemon_api_notls }}"
 
     - name: Merge existing and new settings
-      set_fact:
+      ansible.builtin.set_fact:
         docker_daemon_options: "{{ docker_daemon_options | combine(docker_daemon_api) }}"
-
-  when: docker_api|bool
 
 
 # ---------------------------------------------------------
@@ -54,7 +54,7 @@
 # ---------------------------------------------------------
 
 - name: Docker daemon file
-  copy:
+  ansible.builtin.copy:
     dest: /etc/docker/daemon.json
     content: "{{ docker_daemon_options | to_nice_json }}"
     mode: '0644'
@@ -66,21 +66,21 @@
 # ---------------------------------------------------------
 
 - name: Create docker.service.d directory
-  file:
+  ansible.builtin.file:
     path: /etc/systemd/system/docker.service.d
     state: directory
     mode: '0755'
 
 - name: Configure API access over tcp
   become: yes
-  template:
+  ansible.builtin.template:
     src: "override.conf.j2"
     dest: /etc/systemd/system/docker.service.d/override.conf
     mode: '0644'
   register: docker_service
 
 - name: Configure docker to use HTTP proxy
-  copy:
+  ansible.builtin.copy:
     content: |
       [Service]
       Environment="HTTP_PROXY=http://{{ proxy_ip }}:{{ proxy_port }}/"
@@ -91,14 +91,14 @@
   register: docker_proxy
 
 - name: Force systemd to reread configs
-  systemd:
+  ansible.builtin.systemd:
     daemon_reload: yes
 
 - name: Restart Docker when configuration changes
-  service:
-    name: docker
+  ansible.builtin.service:
+    name: Docker
     state: restarted
-  when: docker_daemon.changed|bool or docker_service.changed|bool or docker_proxy.changed|bool  # noqa no-handler
+  when: docker_daemon.changed | bool or docker_service.changed | bool or docker_proxy.changed | bool  # noqa no-handler
 
 
 
@@ -106,7 +106,7 @@
 #
 # - name: Init docker swarm mode
 #   docker_swarm:
-#     state: "{{ 'present' if docker_swarm|bool else 'absent' }}"
+#     state: "{{ 'present' if docker_swarm | bool else 'absent' }}"
 #     advertise_addr: "{{ docker_swarm_addr | default(ansible_enp0s8.ipv4.address) }}"
 
 
@@ -115,14 +115,15 @@
 # ---------------------------------------------------------
 
 - name: Configure networking
+  when: docker_networking_outbound | bool
   block:
 
     - name: Populate service facts
-      service_facts:
+      ansible.builtin.service_facts:
 
     - name: Activate IP forwarding
-      sysctl:
-        name: net.ipv4.ip_forward
+      ansible.posix.sysctl:
+        name: Net.ipv4.ip_forward
         value: '1'
         sysctl_set: yes
         sysctl_file: /etc/sysctl.d/99-docker.conf
@@ -131,13 +132,13 @@
       when: ansible_facts.services['firewalld.service'] is defined
 
     - name: Enable firewalld forwarding
-      command: >-
+      # possible ambiguous replacement: command : ansible.builtin.command | community.ciscosmb.command | community.routeros.command
+      ansible.builtin.command: >-
         firewall-cmd --permanent --direct --add-rule ipv4 filter FORWARD 0 -d 0.0.0.0/0 -j ACCEPT
       when: ansible_facts.services['firewalld.service'] is defined
 
     - name: Reload firewalld configuration
-      command: firewall-cmd --reload
+      # possible ambiguous replacement: command : ansible.builtin.command | community.ciscosmb.command | community.routeros.command
+      ansible.builtin.command: firewall-cmd --reload
       changed_when: false
       when: ansible_facts.services['firewalld.service'] is defined
-
-  when: docker_networking_outbound|bool

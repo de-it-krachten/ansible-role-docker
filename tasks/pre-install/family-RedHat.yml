@@ -1,7 +1,7 @@
 ---
 
 - name: Install prerequisites
-  yum:
+  ansible.builtin.yum:
     name:
       - yum-utils
       - device-mapper-persistent-data

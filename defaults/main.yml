@@ -62,7 +62,7 @@ docker_cgroups_v2: false
 # Enable networking from container -> outsite-world
 docker_networking_outbound: false
 
-# Docker API  
+# Docker API
 docker_api: false
 docker_api_tls: false
 
