@@ -49,7 +49,7 @@
 
 - name: Start Docker service
   ansible.builtin.service:
-    name: Docker
+    name: docker
     state: started
     enabled: yes
   become: yes

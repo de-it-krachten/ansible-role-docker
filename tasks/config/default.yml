@@ -96,7 +96,7 @@
 
 - name: Restart Docker when configuration changes
   ansible.builtin.service:
-    name: Docker
+    name: docker
     state: restarted
   when: docker_daemon.changed | bool or docker_service.changed | bool or docker_proxy.changed | bool  # noqa no-handler
 
