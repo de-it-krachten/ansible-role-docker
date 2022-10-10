@@ -1,39 +1,37 @@
 ---
 
-- name: Check if systemd.unified_cgroup_hierarchy=0 is set in kernelopts
-  command: grep -Eq 'GRUB_CMDLINE_LINUX=.*systemd\.unified_cgroup_hierarchy=0' /etc/default/grub
+- name: Check if systemd.unified_cgroup_hierarchy=0 is set in kernelopts  # noqa no-free-form
+  ansible.builtin.command: grep -Eq 'GRUB_CMDLINE_LINUX=.*systemd\.unified_cgroup_hierarchy=0' /etc/default/grub
   register: grubenv_has_cgroup_exception
   check_mode: no
   failed_when: no
   changed_when: no
 
 - name: Enable cgroups v2 when previously disabled
+  when:
+    - grubenv_has_cgroup_exception.rc == 0
+    - docker_cgroups_v2 | bool
   block:
 
     - name: Install grubby
-      dnf:
-        name: grubby
+      ansible.builtin.dnf:
+        name: Grubby
         state: present
 
-    - name: Remove previously configured systemd.unified_cgroup_hierarchy=0 in kernelopts  # noqa no-changed-when
-      command: grubby --update-kernel=ALL --remove-args="systemd.unified_cgroup_hierarchy=0"
-
-  when:
-    - grubenv_has_cgroup_exception.rc == 0
-    - docker_cgroups_v2|bool
+    - name: Remove previously configured systemd.unified_cgroup_hierarchy=0 in kernelopts  # noqa no-changed-when no-free-form
+      ansible.builtin.command: grubby --update-kernel=ALL --remove-args="systemd.unified_cgroup_hierarchy=0"
 
 
 - name: Disable cgroups v2
+  when:
+    - grubenv_has_cgroup_exception.rc == 1
+    - not docker_cgroups_v2 | bool
   block:
 
     - name: Install grubby
-      dnf:
-        name: grubby
+      ansible.builtin.dnf:
+        name: Grubby
         state: present
 
-    - name: Add systemd.unified_cgroup_hierarchy=0 in kernelopts  # noqa no-changed-when
-      command: grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
-
-  when:
-    - grubenv_has_cgroup_exception.rc == 1
-    - not docker_cgroups_v2|bool
+    - name: Add systemd.unified_cgroup_hierarchy=0 in kernelopts  # noqa no-changed-when no-free-form
+      ansible.builtin.command: grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"

@@ -7,7 +7,7 @@ docker_os_release: "{{ ansible_distribution_major_version }}"
 docker_packages:
   - docker-ce
 
-# Docker URL 
+# Docker URL
 docker_repo_url: https://download.docker.com/linux
 
 # Docker release channel

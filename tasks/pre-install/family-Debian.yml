@@ -1,7 +1,7 @@
 ---
 
 - name: Install prerequisites
-  package:
+  ansible.builtin.package:
     name: "{{ packages }}"
     state: present
   vars:

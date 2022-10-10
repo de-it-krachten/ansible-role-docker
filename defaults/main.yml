@@ -1,8 +1,8 @@
 ---
 
-#-----------------------------------------
+# -----------------------------------------
 # Docker package repository
-#-----------------------------------------
+# -----------------------------------------
 
 # repo definition and/or GPG file
 docker:
@@ -47,22 +47,22 @@ docker_daemon: {}
 docker_daemon_options: {}
 
 
-#-----------------------------------------
+# -----------------------------------------
 # Docker OS settings
-#-----------------------------------------
+# -----------------------------------------
 
 # Should cgroups v2 be enabled (Fedora only)
 docker_cgroups_v2: false
 
 
-#-----------------------------------------
+# -----------------------------------------
 # Docker networking
-#-----------------------------------------
+# -----------------------------------------
 
 # Enable networking from container -> outsite-world
 docker_networking_outbound: false
 
-# Docker API  
+# Docker API
 docker_api: false
 docker_api_tls: false
 

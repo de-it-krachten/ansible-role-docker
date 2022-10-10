@@ -1,7 +1,7 @@
 ---
 
 - name: Define TLS variables
-  set_fact:
+  ansible.builtin.set_fact:
     api_ssl:
       debug: false
       tls: true
@@ -13,14 +13,15 @@
 
 # Docker API w/ SSL
 - name: Docker API w/ SSL
+  when: docker_api_ssl | bool
   block:
 
     - name: Set docker_api_listen_port to {{ docker_api_listen_port_ssl }}
-      set_fact:
+      ansible.builtin.set_fact:
         docker_api_listen_port: "{{ docker_api_listen_port_ssl }}"
 
     - name: Define docker daemon command w/ SSL
-      set_fact:
+      ansible.builtin.set_fact:
         docker_command: >-
           ExecStart=/usr/bin/dockerd
           -H fd://
@@ -31,37 +32,34 @@
           --tlskey={{ openssl_server_key }}
           --containerd=/run/containerd/containerd.sock
 
-  when: docker_api_ssl|bool
-
 # Docker API w/out SSL
 - name: Docker API w/out SSL
+  when: not docker_api_ssl | bool
   block:
 
     - name: Define docker daemon command w/out SSL
-      set_fact:
+      ansible.builtin.set_fact:
         docker_command: >-
           ExecStart=/usr/bin/dockerd
           -H fd://
           -H tcp://{{ docker_api_listen_address }}:{{ docker_api_listen_port }}
           --containerd=/run/containerd/containerd.sock
 
-  when: not docker_api_ssl|bool
-
 - name: Copy default service file
-  copy:
+  ansible.builtin.copy:
     src: /usr/lib/systemd/system/docker.service
     dest: /etc/systemd/system/docker.service
-    remote_src: True
-    force: False
+    remote_src: true
+    force: false
     mode: "0644"
 
 - name: Strip socket when running in Docker (like molecule)
-  set_fact:
+  ansible.builtin.set_fact:
     docker_command: "{{ docker_command | regex_replace('-H fd:// ', '') }}"
   when: ansible_virtualization_type == "docker"
 
 - name: Activate Docker API through service file
-  replace:
+  ansible.builtin.replace:
     path: /etc/systemd/system/docker.service
     regexp: "^ExecStart=.*"
     replace: "{{ docker_command }}"
@@ -69,18 +67,18 @@
     - Restart docker
 
 - name: Open firewall if listen address is not 127.0.0.1
-  include_role:
-    name: firewall
+  ansible.builtin.include_role:
+    name: Firewall
   vars:
     firewall_ports:
-      - port: "{{ docker_api_listen_port }}"
+      - openstack.cloud.port: "{{ docker_api_listen_port }}"
         proto: tcp
   when:
-    - manage_firewall|bool
+    - manage_firewall | bool
     - docker_api_listen_address != '127.0.0.1'
 
 - name: Make sure .docker exists on Ansible/Tower host
-  file:
+  ansible.builtin.file:
     state: directory
     path: ~/.docker
     mode: '0700'
@@ -88,9 +86,9 @@
   delegate_to: localhost
 
 - name: Fetch all openssl client keys
-  fetch:
+  ansible.builtin.fetch:
     src: "{{ item }}"
-    dest: ~/.docker/{{ item|basename|regex_replace('\.client', '') }}
+    dest: ~/.docker/{{ item | basename | regex_replace('\.client', '') }}
     flat: yes
   loop:
     - /etc/ssl/ca/ca-{{ inventory_hostname }}.crt
