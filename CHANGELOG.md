@@ -1,3 +1,12 @@
+# [1.4.0](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.3.0...v1.4.0) (2022-10-12)
+
+
+### Features
+
+* Add support for other architecture than 'x86_64' ([d1a6121](https://github.com/de-it-krachten/ansible-role-docker/commit/d1a61219dfe7c1480213a154e55e261564776177))
+* Move to FQCN ([47cf590](https://github.com/de-it-krachten/ansible-role-docker/commit/47cf590b57cd36420004722055be5e3fa3213b79))
+* Update CI to latest standards ([586f649](https://github.com/de-it-krachten/ansible-role-docker/commit/586f64998dac37fd58271a3ac27616c81403982b))
+
 # [1.3.0](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.2.3...v1.3.0) (2022-07-28)
 
 
