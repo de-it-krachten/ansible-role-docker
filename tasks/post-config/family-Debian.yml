@@ -1,6 +1,6 @@
 ---
 
-- name: Extend the list of firewall ports
-  set_fact:
-    docker_firewall_ports: "{{ docker_firewall_ports + [ docker_api_listen_port+'/tcp' ] }}"
+- name: Extend the list of firewall ports  # noqa jinja[spacing]
+  ansible.builtin.set_fact:
+    docker_firewall_ports: "{{ docker_firewall_ports + [ docker_api_listen_port + '/tcp' ] }}"
   when: docker_api_listen_port is defined

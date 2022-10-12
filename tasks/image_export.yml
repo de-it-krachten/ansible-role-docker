@@ -1,22 +1,22 @@
 ---
 
-- name: Pull image '{{ docker_image_name }}'
-  docker_image:
-    name: "{{ docker_image_name if docker_image_tag is not defined else (docker_image_name+':'+docker_image_tag) }}"
+- name: Pull image
+  community.docker.docker_image:
+    name: "{{ docker_image_name if docker_image_tag is not defined else (docker_image_name + ':' + docker_image_tag) }}"
     source: pull
 
 - name: Retrieve image information
-  docker_image_info:
-    name: "{{ docker_image_name if docker_image_tag is not defined else (docker_image_name+':'+docker_image_tag) }}"
+  community.docker.docker_image_info:
+    name: "{{ docker_image_name if docker_image_tag is not defined else (docker_image_name + ':' + docker_image_tag) }}"
   register: images
 
 - name: Get image id from the info
-  set_fact:
+  ansible.builtin.set_fact:
     image_id: "{{ images['images'][0]['Id'][7:19] }}"
     image_file: "{{ docker_image_file if docker_image_file is defined else docker_image_name }}"
 
 - name: Export the image to a compressed tar ball  # noqa no-changed-when
-  shell:
+  ansible.builtin.shell:
     set -o pipefail
     docker save {{ image_id }} | gzip > /tmp/{{ docker_image_file }}.{{ image_id }}.tgz
   args:

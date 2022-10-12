@@ -7,14 +7,14 @@ docker_os_release: "{{ ansible_distribution_major_version }}"
 docker_packages:
   - docker-ce
 
-# Docker URL 
+# Docker URL
 docker_repo_url: https://download.docker.com/linux
 
 # Docker release channel
 docker_apt_release_channel: stable
 
 # Docker architecture
-docker_apt_arch: amd64
+docker_apt_arch: "{{ docker_arch_mapping[ansible_architecture] }}"
 
 # Docker APT repostory
 docker_apt_repository: >-

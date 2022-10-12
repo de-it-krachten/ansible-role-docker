@@ -3,14 +3,14 @@
 # Install Docker CE
 
 - name: Show OS specifics
-  debug:
+  ansible.builtin.debug:
     msg:
       - "ansible_distribution: {{ ansible_distribution }}"
       - "ansible_distribution_major_version: {{ ansible_distribution_major_version }}"
       - "ansible_os_family: {{ ansible_os_family }}"
 
 - name: Load variables based on OS type
-  include_vars: "{{ lookup('first_found', params) }}"
+  ansible.builtin.include_vars: "{{ lookup('first_found', params) }}"
   vars:
     params:
       files:
@@ -23,8 +23,8 @@
         - 'vars'
 
 
-- name: pre-install
-  include_tasks: "{{ lookup('first_found', params) }}"
+- name: Pre-install
+  ansible.builtin.include_tasks: "{{ lookup('first_found', params) }}"
   vars:
     params:
       files:
@@ -36,8 +36,8 @@
       paths:
         - 'pre-install'
 
-- name: install
-  include_tasks: "{{ lookup('first_found', params) }}"
+- name: Install
+  ansible.builtin.include_tasks: "{{ lookup('first_found', params) }}"
   vars:
     params:
       files:
@@ -49,8 +49,8 @@
       paths:
         - 'install'
 
-- name: config
-  include_tasks: "{{ lookup('first_found', params) }}"
+- name: Config
+  ansible.builtin.include_tasks: "{{ lookup('first_found', params) }}"
   vars:
     params:
       files:
@@ -62,8 +62,8 @@
       paths:
         - 'config'
 
-- name: post-config
-  include_tasks: "{{ lookup('first_found', params) }}"
+- name: Post-config
+  ansible.builtin.include_tasks: "{{ lookup('first_found', params) }}"
   vars:
     params:
       files:
