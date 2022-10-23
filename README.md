@@ -43,9 +43,9 @@ Note:
 ## Role Variables
 ### defaults/main.yml
 <pre><code>
-#-----------------------------------------
+# -----------------------------------------
 # Docker package repository
-#-----------------------------------------
+# -----------------------------------------
 
 # repo definition and/or GPG file
 docker:
@@ -90,17 +90,17 @@ docker_daemon: {}
 docker_daemon_options: {}
 
 
-#-----------------------------------------
+# -----------------------------------------
 # Docker OS settings
-#-----------------------------------------
+# -----------------------------------------
 
 # Should cgroups v2 be enabled (Fedora only)
 docker_cgroups_v2: false
 
 
-#-----------------------------------------
+# -----------------------------------------
 # Docker networking
-#-----------------------------------------
+# -----------------------------------------
 
 # Enable networking from container -> outsite-world
 docker_networking_outbound: false
@@ -217,7 +217,7 @@ docker_apt_gpg_key: "{{ docker_repo_url }}/{{ ansible_distribution | lower }}/gp
 <pre><code>
 - name: sample playbook for role 'docker'
   hosts: all
-  become: "{{ molecule['converge']['become'] | default('yes') }}"
+  become: "yes"
   tasks:
     - name: Include role 'docker'
       ansible.builtin.include_role:
