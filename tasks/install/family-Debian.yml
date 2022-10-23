@@ -16,8 +16,14 @@
     file: /tmp/docker.gpg
     state: present
 
-- name: Add Docker repository.
+- name: Delete obsolete repository file
+  ansible.builtin.file:
+    path: /etc/apt/sources.list.d/download_docker_com_linux_debian.list
+    state: absent
+
+- name: Setup repository definition
   ansible.builtin.apt_repository:
+    filename: docker-ce
     repo: "{{ docker_apt_repository }}"
     state: present
     update_cache: true
