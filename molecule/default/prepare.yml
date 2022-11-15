@@ -35,8 +35,10 @@
       - rocky9
       - almalinux8
       - almalinux9
-
     systemctl_alternative: False
+  roles:
+    - showinfo
+    - facts
   tasks:
 
     - name: Create remote_tmp
