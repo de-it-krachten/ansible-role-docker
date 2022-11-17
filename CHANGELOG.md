@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.4.1...v1.5.0) (2022-11-17)
+
+
+### Features
+
+* Add support for OracleLinux 9 ([e6f6586](https://github.com/de-it-krachten/ansible-role-docker/commit/e6f6586928dacf21395412ba066c337c34682dfc))
+
 ## [1.4.1](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.4.0...v1.4.1) (2022-10-23)
 
 
