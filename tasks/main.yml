@@ -74,3 +74,6 @@
         - default.yml
       paths:
         - 'post-config'
+
+- name: Scripts & tools
+  ansible.builtin.include_tasks: scripts.yml
