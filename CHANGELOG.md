@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.5.0...v1.6.0) (2022-11-27)
+
+
+### Features
+
+* Add scripts for backup & cleanup ([8641386](https://github.com/de-it-krachten/ansible-role-docker/commit/8641386571e62a205326852b9b1c41076db61337))
+
 # [1.5.0](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.4.1...v1.5.0) (2022-11-17)
 
 
