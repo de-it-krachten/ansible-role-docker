@@ -15,7 +15,7 @@
 
     - name: Install grubby
       ansible.builtin.dnf:
-        name: Grubby
+        name: grubby
         state: present
 
     - name: Remove previously configured systemd.unified_cgroup_hierarchy=0 in kernelopts  # noqa no-changed-when no-free-form
@@ -30,7 +30,7 @@
 
     - name: Install grubby
       ansible.builtin.dnf:
-        name: Grubby
+        name: grubby
         state: present
 
     - name: Add systemd.unified_cgroup_hierarchy=0 in kernelopts  # noqa no-changed-when no-free-form

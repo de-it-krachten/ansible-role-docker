@@ -22,9 +22,9 @@
       paths:
         - 'vars'
 
-
-- name: Pre-install
-  ansible.builtin.include_tasks: "{{ lookup('first_found', params) }}"
+- name: Define OS specific task files  # noqa var-naming
+  ansible.builtin.set_fact:
+    "{{ item }}": "{{ lookup('first_found', params) }}"
   vars:
     params:
       files:
@@ -34,46 +34,21 @@
         - "family-{{ ansible_os_family }}.yml"
         - default.yml
       paths:
-        - 'pre-install'
+        - "tasks/{{ item | regex_replace('_', '-') }}"
+  loop:
+    - pre_install
+    - install
+    - config
+    - post_config
 
-- name: Install
-  ansible.builtin.include_tasks: "{{ lookup('first_found', params) }}"
-  vars:
-    params:
-      files:
-        - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
-        - "{{ ansible_distribution }}.yml"
-        - "family-{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
-        - "family-{{ ansible_os_family }}.yml"
-        - default.yml
-      paths:
-        - 'install'
-
-- name: Config
-  ansible.builtin.include_tasks: "{{ lookup('first_found', params) }}"
-  vars:
-    params:
-      files:
-        - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
-        - "{{ ansible_distribution }}.yml"
-        - "family-{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
-        - "family-{{ ansible_os_family }}.yml"
-        - default.yml
-      paths:
-        - 'config'
-
-- name: Post-config
-  ansible.builtin.include_tasks: "{{ lookup('first_found', params) }}"
-  vars:
-    params:
-      files:
-        - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
-        - "{{ ansible_distribution }}.yml"
-        - "family-{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
-        - "family-{{ ansible_os_family }}.yml"
-        - default.yml
-      paths:
-        - 'post-config'
+- name: Execute each OS specific task file
+  ansible.builtin.include_tasks:
+    file: "{{ vars[item] }}"
+  loop:
+    - pre_install
+    - install
+    - config
+    - post_config
 
 - name: Scripts & tools
   ansible.builtin.include_tasks: scripts.yml
