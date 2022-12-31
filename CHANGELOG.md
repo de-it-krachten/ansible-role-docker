@@ -1,3 +1,11 @@
+## [1.6.1](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.6.0...v1.6.1) (2022-12-31)
+
+
+### Bug Fixes
+
+* Change how task files are included to work around lint issue ([809ae85](https://github.com/de-it-krachten/ansible-role-docker/commit/809ae85c088c467b473f03c0aaf038a95a234e71))
+* Fix faulty package name for Fedora ([dd3b9cd](https://github.com/de-it-krachten/ansible-role-docker/commit/dd3b9cd28bff6f5b6f42046b03739461b9ec0222))
+
 # [1.6.0](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.5.0...v1.6.0) (2022-11-27)
 
 
