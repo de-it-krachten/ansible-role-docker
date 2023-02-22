@@ -12,13 +12,19 @@
   check_mode: no
 
 - name: Retrieve fingerprint from key
-  ansible.builtin.shell: >-
-    gpg --show-keys --with-colons /tmp/docker.gpg |
-    grep -m1 "fpr:" |
-    awk -F: '{print $10}'
+  ansible.builtin.shell: |
+    set -o pipefail
+    gpg --with-colons /tmp/docker.gpg | \
+    awk -F: '/^pub:/ {print $5}'
+  args:
+    executable: /bin/bash
   changed_when: false
   check_mode: no
   register: __gpg_fpr
+
+- name: Show fingerprint of the key
+  ansible.builtin.debug:
+    msg: "Key {{ __gpg_fpr.stdout }}"
 
 - name: Delete APT signing key from legacy location
   ansible.builtin.apt_key:
@@ -72,7 +78,6 @@
   tags: molecule-idempotence-notest
 
 - name: Add users to docker group
-  # possible ambiguous replacement: user : ansible.builtin.user | awx.awx.user | inspur.sm.user | sensu.sensu_go.user | theforeman.foreman.user
   ansible.builtin.user:
     name: "{{ item }}"
     groups: docker

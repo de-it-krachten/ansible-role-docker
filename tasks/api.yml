@@ -68,7 +68,7 @@
 
 - name: Open firewall if listen address is not 127.0.0.1
   ansible.builtin.include_role:
-    name: Firewall
+    name: deitkrachten.firewall
   vars:
     firewall_ports:
       - openstack.cloud.port: "{{ docker_api_listen_port }}"

@@ -3,7 +3,8 @@
 
 # ansible-role-docker
 
-Installs & configures Docker CE
+Installs & configures Docker CE   
+
 
 
 ## Dependencies
@@ -23,7 +24,7 @@ Supported platforms
 - Red Hat Enterprise Linux 7<sup>1</sup>
 - Red Hat Enterprise Linux 8<sup>1</sup>
 - Red Hat Enterprise Linux 9<sup>1</sup>
-- CentOS 7
+- CentOS 7<sup>1</sup>
 - RockyLinux 8
 - RockyLinux 9
 - OracleLinux 8
@@ -171,16 +172,6 @@ docker_arch_mapping:
 </pre></code>
 
 
-### vars/family-RedHat.yml
-<pre><code>
-# OS release
-docker_os_release: "{{ ansible_distribution_major_version }}"
-
-# Docker CE packages
-docker_packages:
-  - docker-ce
-</pre></code>
-
 ### vars/family-Debian.yml
 <pre><code>
 # OS release
@@ -211,6 +202,16 @@ docker_apt_ignore_key_error: true
 docker_apt_gpg_key: "{{ docker_repo_url }}/{{ ansible_distribution | lower }}/gpg"
 </pre></code>
 
+### vars/family-RedHat.yml
+<pre><code>
+# OS release
+docker_os_release: "{{ ansible_distribution_major_version }}"
+
+# Docker CE packages
+docker_packages:
+  - docker-ce
+</pre></code>
+
 
 
 ## Example Playbook
@@ -219,6 +220,8 @@ docker_apt_gpg_key: "{{ docker_repo_url }}/{{ ansible_distribution | lower }}/gp
 - name: sample playbook for role 'docker'
   hosts: all
   become: "yes"
+  roles:
+    - deitkrachten.showinfo
   tasks:
     - name: Include role 'docker'
       ansible.builtin.include_role:
