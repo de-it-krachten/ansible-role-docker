@@ -1,3 +1,11 @@
+## [1.6.2](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.6.1...v1.6.2) (2023-04-10)
+
+
+### Bug Fixes
+
+* Change how task files are included to work around lint issue ([28e7797](https://github.com/de-it-krachten/ansible-role-docker/commit/28e7797b40bbb26bf4fc36138879abae8a5556d2))
+* Move APT signing key to '/etc/trusted.gpg.d' location ([4896b25](https://github.com/de-it-krachten/ansible-role-docker/commit/4896b25ae110ff68db84bfd852f04a49374066de))
+
 ## [1.6.1](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.6.0...v1.6.1) (2022-12-31)
 
 
