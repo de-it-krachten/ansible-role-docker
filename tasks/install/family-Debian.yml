@@ -11,10 +11,32 @@
     http_proxy: "{{ http_proxy | default('') }}"
   check_mode: no
 
-- name: Import APT signing key
+- name: Retrieve fingerprint from key
+  ansible.builtin.shell: |
+    set -o pipefail
+    gpg --with-colons /tmp/docker.gpg | \
+    awk -F: '/^pub:/ {print $5}'
+  args:
+    executable: /bin/bash
+  changed_when: false
+  check_mode: no
+  register: __gpg_fpr
+
+- name: Show fingerprint of the key
+  ansible.builtin.debug:
+    msg: "Key {{ __gpg_fpr.stdout }}"
+
+- name: Delete APT signing key from legacy location
+  ansible.builtin.apt_key:
+    id: "0x{{ __gpg_fpr.stdout }}"
+    state: absent
+    keyring: /etc/apt/trusted.gpg
+
+- name: Import APT signing key into the proper drop-in directory
   ansible.builtin.apt_key:
     file: /tmp/docker.gpg
     state: present
+    keyring: /etc/apt/trusted.gpg.d/docker.gpg
 
 - name: Delete obsolete repository file
   ansible.builtin.file:
@@ -56,7 +78,6 @@
   tags: molecule-idempotence-notest
 
 - name: Add users to docker group
-  # possible ambiguous replacement: user : ansible.builtin.user | awx.awx.user | inspur.sm.user | sensu.sensu_go.user | theforeman.foreman.user
   ansible.builtin.user:
     name: "{{ item }}"
     groups: docker

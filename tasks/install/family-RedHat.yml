@@ -63,7 +63,6 @@
   tags: molecule-idempotence-notest
 
 - name: Add users to docker group
-  # possible ambiguous replacement: user : ansible.builtin.user | awx.awx.user | inspur.sm.user | sensu.sensu_go.user | theforeman.foreman.user
   ansible.builtin.user:
     name: "{{ item }}"
     groups: docker

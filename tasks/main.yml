@@ -41,14 +41,17 @@
     - config
     - post_config
 
-- name: Execute each OS specific task file
-  ansible.builtin.include_tasks:
-    file: "{{ vars[item] }}"
-  loop:
-    - pre_install
-    - install
-    - config
-    - post_config
+- name: Pre-install phase
+  ansible.builtin.include_tasks: "{{ pre_install }}"
+
+- name: Install phase
+  ansible.builtin.include_tasks: "{{ install }}"
+
+- name: Config phase
+  ansible.builtin.include_tasks: "{{ config }}"
+
+- name: Post-config phase
+  ansible.builtin.include_tasks: "{{ post_config }}"
 
 - name: Scripts & tools
   ansible.builtin.include_tasks: scripts.yml
