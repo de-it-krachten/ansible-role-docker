@@ -10,3 +10,4 @@
   loop:
     - docker-clean.sh
     - docker-compose-backup.sh
+    - docker-compose-restore.sh
