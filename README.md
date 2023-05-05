@@ -220,8 +220,6 @@ docker_packages:
 - name: sample playbook for role 'docker'
   hosts: all
   become: "yes"
-  roles:
-    - deitkrachten.showinfo
   tasks:
     - name: Include role 'docker'
       ansible.builtin.include_role:

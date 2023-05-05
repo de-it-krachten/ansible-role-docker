@@ -3,8 +3,6 @@
 - name: Converge
   hosts: all
   become: "yes"
-  roles:
-    - deitkrachten.showinfo
   tasks:
     - name: Include role 'ansible-role-docker'
       ansible.builtin.include_role:
