@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.6.2...v1.7.0) (2023-05-06)
+
+
+### Features
+
+* Add restore script for docker-compose backup ([07412eb](https://github.com/de-it-krachten/ansible-role-docker/commit/07412eb6b0f6317cb0600b98bd52f4ee3f378bb2))
+
 ## [1.6.2](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.6.1...v1.6.2) (2023-04-10)
 
 
