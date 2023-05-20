@@ -10,6 +10,7 @@
     https_proxy: "{{ https_proxy | default('') }}"
     http_proxy: "{{ http_proxy | default('') }}"
   check_mode: no
+  changed_when: false
 
 - name: Retrieve fingerprint from key
   ansible.builtin.shell: |
