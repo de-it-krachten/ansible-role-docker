@@ -175,7 +175,7 @@ docker_arch_mapping:
 ### vars/family-Debian.yml
 <pre><code>
 # OS release
-docker_os_release: "{{ ansible_distribution_major_version }}"
+# docker_os_release: "{{ ansible_distribution_major_version }}"
 
 # Docker CE packages
 docker_packages:
@@ -205,7 +205,7 @@ docker_apt_gpg_key: "{{ docker_repo_url }}/{{ ansible_distribution | lower }}/gp
 ### vars/family-RedHat.yml
 <pre><code>
 # OS release
-docker_os_release: "{{ ansible_distribution_major_version }}"
+# docker_os_release: "{{ ansible_distribution_major_version }}"
 
 # Docker CE packages
 docker_packages:
