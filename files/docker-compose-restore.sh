@@ -175,6 +175,8 @@ fi
 Project=$1
 File=$2
 
+Tmpdir=$(mktemp -d)
+
 # Extract backup to temporary location
 tar -C $Tmpdir -xf $File
 
@@ -190,7 +192,7 @@ fi
 rsync -a $Tmpdir/project/ $Project_dir
 
 # for Volume in `ls -d $Tmpdir/*/volumes/* | sed -r "s/.*\/([a-zA-Z0-9\-_]+)$/\\1/" | sort -u`
-Volumes=`ls -d $Tmpdir/*/volumes/*`
+Volumes=`ls -d $Tmpdir/*/volumes/* 2>/dev/null`
 for Volume in $Volumes
 do
   echo "Processing volume '$Volume'"
@@ -204,3 +206,6 @@ do
   fi
   rsync -a ${Volume}/ $Path
 done
+
+# Delete tmpdir
+rm -fr $Tmpdir

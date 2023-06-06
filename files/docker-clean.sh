@@ -118,7 +118,7 @@ then
   $Sudo $Docker container ls
 
   echo "Stop all running containers"
-  Containers=$($Sudo $Docker container ls -a | awk 'NR>1' | egrep "$Filter" | egrep -v "$DOCKER_PROTECT" | awk '{print $1}')
+  Containers=$($Sudo $Docker container ls -a | awk 'NR>1' | grep -E "$Filter" | grep -v -E "$DOCKER_PROTECT" | awk '{print $1}')
   [[ -n $Containers ]] && echo "$Containers" | xargs $Echo $Sudo $Docker container kill
 
   echo "Delete all containers"
