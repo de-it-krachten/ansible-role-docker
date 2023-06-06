@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.7.0...v1.7.1) (2023-06-06)
+
+
+### Bug Fixes
+
+* Fix warnings from backup/restore scripts ([e4526aa](https://github.com/de-it-krachten/ansible-role-docker/commit/e4526aa0419e178f50865f9f0f48c491c414149b))
+
 # [1.7.0](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.6.2...v1.7.0) (2023-05-06)
 
 
