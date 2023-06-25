@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.7.1...v1.8.0) (2023-06-25)
+
+
+### Features
+
+* Move scripts to docker_scripts role ([6a6a251](https://github.com/de-it-krachten/ansible-role-docker/commit/6a6a251f22ac98f93f871566c25d12896945d8b0))
+
 ## [1.7.1](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.7.0...v1.7.1) (2023-06-06)
 
 
