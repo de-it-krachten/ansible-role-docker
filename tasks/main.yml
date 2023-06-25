@@ -52,6 +52,3 @@
 
 - name: Post-config phase
   ansible.builtin.include_tasks: "{{ post_config }}"
-
-- name: Scripts & tools
-  ansible.builtin.include_tasks: scripts.yml
