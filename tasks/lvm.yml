@@ -1,0 +1,13 @@
+---
+
+- name: LVM assertions
+  ansible.builtin.assert:
+    that:
+      - docker_vg is defined
+      - docker_pv is defined
+
+- name: Setup LVM  # noqa var-naming[no-role-prefix]
+  ansible.builtin.include_role:
+    name: deitkrachten.lvm
+  vars:
+    lvm: "{{ docker_lvm_setup }}"
