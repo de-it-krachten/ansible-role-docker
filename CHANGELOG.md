@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.8.0...v1.9.0) (2023-06-28)
+
+
+### Features
+
+* Add support for LVM based volumes ([f9c50c1](https://github.com/de-it-krachten/ansible-role-docker/commit/f9c50c16bc0f92304171ef10b575aea10238df6c))
+
 # [1.8.0](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.7.1...v1.8.0) (2023-06-25)
 
 
