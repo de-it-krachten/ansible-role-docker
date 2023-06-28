@@ -12,3 +12,26 @@ platforms:
   centos7:
     ci: false
     supported: true
+
+molecule:
+  converge:
+    vars:
+      docker_lvm: false
+      docker_vg: dockervg
+      docker_pv: /dev/sdb
+      docker_root: /export/docker
+      docker_lvm_setup:
+        vg:
+          - name: "{{ docker_vg }}"
+            pv: "{{ docker_pv }}"
+        lv:
+          - name: lv_docker
+            vg: "{{ docker_vg }}"
+            size: 10G
+            mp: /var/lib/docker
+            fstype: xfs
+          - name: lv_docker_data
+            vg: "{{ docker_vg }}"
+            size: 10G
+            mp: "{{ docker_root }}"
+            fstype: xfs

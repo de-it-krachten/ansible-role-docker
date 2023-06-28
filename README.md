@@ -33,11 +33,10 @@ Supported platforms
 - AlmaLinux 9
 - Debian 10 (Buster)
 - Debian 11 (Bullseye)
-- Ubuntu 18.04 LTS
 - Ubuntu 20.04 LTS
 - Ubuntu 22.04 LTS
-- Fedora 36
 - Fedora 37
+- Fedora 38
 
 Note:
 <sup>1</sup> : no automated testing is performed on these platforms
@@ -99,6 +98,12 @@ docker_daemon_options: {}
 # Should cgroups v2 be enabled (Fedora only)
 docker_cgroups_v2: false
 
+
+# -----------------------------------------
+# Docker storage
+# -----------------------------------------
+
+docker_lvm: false
 
 # -----------------------------------------
 # Docker networking
@@ -220,6 +225,12 @@ docker_packages:
 - name: sample playbook for role 'docker'
   hosts: all
   become: "yes"
+  vars:
+    docker_lvm: False
+    docker_vg: dockervg
+    docker_pv: /dev/sdb
+    docker_root: /export/docker
+    docker_lvm_setup: "{'vg': [{'name': '{{ docker_vg }}', 'pv': '{{ docker_pv }}'}], 'lv': [{'name': 'lv_docker', 'vg': '{{ docker_vg }}', 'size': '10G', 'mp': '/var/lib/docker', 'fstype': 'xfs'}, {'name': 'lv_docker_data', 'vg': '{{ docker_vg }}', 'size': '10G', 'mp': '{{ docker_root }}', 'fstype': 'xfs'}]}"
   tasks:
     - name: Include role 'docker'
       ansible.builtin.include_role:

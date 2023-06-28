@@ -20,7 +20,6 @@ galaxy_info:
         - bullseye
     - name: Ubuntu
       versions:
-        - bionic
         - focal
         - jammy
     - name: Fedora
