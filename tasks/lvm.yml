@@ -6,7 +6,7 @@
       - docker_vg is defined
       - docker_pv is defined
 
-- name: Setup LVM
+- name: Setup LVM  # noqa var-naming[no-role-prefix]
   ansible.builtin.include_role:
     name: deitkrachten.lvm
   vars:
