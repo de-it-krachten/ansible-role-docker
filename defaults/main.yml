@@ -130,3 +130,7 @@ docker_arch_mapping:
   aarch64: "arm64"
   x86_64: "amd64"
   i386: "i386"
+
+# Lookup the value we need for Debian/apt
+docker_apt_arch: "{{ docker_arch_mapping[ansible_architecture] }}"
+

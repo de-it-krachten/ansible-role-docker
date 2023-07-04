@@ -31,6 +31,8 @@ Supported platforms
 - OracleLinux 9
 - AlmaLinux 8
 - AlmaLinux 9
+- SUSE Linux Enterprise<sup>1</sup>
+- openSUSE Leap 15
 - Debian 10 (Buster)
 - Debian 11 (Bullseye)
 - Ubuntu 20.04 LTS
@@ -176,8 +178,7 @@ docker_arch_mapping:
   i386: "i386"
 </pre></code>
 
-
-### vars/family-Debian.yml
+### defaults/family-Debian.yml
 <pre><code>
 # OS release
 # docker_os_release: "{{ ansible_distribution_major_version }}"
@@ -207,7 +208,17 @@ docker_apt_ignore_key_error: true
 docker_apt_gpg_key: "{{ docker_repo_url }}/{{ ansible_distribution | lower }}/gpg"
 </pre></code>
 
-### vars/family-RedHat.yml
+### defaults/family-Suse.yml
+<pre><code>
+# OS release
+# docker_os_release: "{{ ansible_distribution_major_version }}"
+
+# Docker CE packages
+docker_packages:
+  - docker
+</pre></code>
+
+### defaults/family-RedHat.yml
 <pre><code>
 # OS release
 # docker_os_release: "{{ ansible_distribution_major_version }}"
@@ -216,6 +227,7 @@ docker_apt_gpg_key: "{{ docker_repo_url }}/{{ ansible_distribution | lower }}/gp
 docker_packages:
   - docker-ce
 </pre></code>
+
 
 
 
