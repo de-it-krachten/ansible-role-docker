@@ -9,18 +9,8 @@
       - "ansible_distribution_major_version: {{ ansible_distribution_major_version }}"
       - "ansible_os_family: {{ ansible_os_family }}"
 
-- name: Load variables based on OS type
-  ansible.builtin.include_vars: "{{ lookup('first_found', params) }}"
-  vars:
-    params:
-      files:
-        - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
-        - "{{ ansible_distribution }}.yml"
-        - "family-{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
-        - "family-{{ ansible_os_family }}.yml"
-        - default.yml
-      paths:
-        - 'vars'
+- name: Load defaults based on OS type
+  ansible.builtin.include_tasks: vars.yml
 
 - name: Define OS specific task files  # noqa var-naming
   ansible.builtin.set_fact:

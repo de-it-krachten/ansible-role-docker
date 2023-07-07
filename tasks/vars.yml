@@ -1,0 +1,34 @@
+---
+
+- name: Clear platform variables
+  ansible.builtin.set_fact:
+    __defaults_vars: {}
+
+- name: Create list of all platform default files
+  ansible.builtin.set_fact:
+    var_list: "{{ lookup('fileglob', 'defaults/*', wantlist=True) | regex_replace(role_path + '/') }}"
+
+- name: Show all defaults found
+  ansible.builtin.debug:
+    var: var_list
+    verbosity: 1
+
+- name: Load defaults based on OS type
+  ansible.builtin.set_fact:
+    __defaults_vars: "{{ __defaults_vars | combine((lookup('template', item, errors='ignore') | from_yaml)) }}"
+  loop:
+    - "defaults/defaults.yml"
+    - "defaults/family-{{ ansible_os_family }}.yml"
+    - "defaults/family-{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
+    - "defaults/{{ ansible_distribution }}.yml"
+    - "defaults/{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+  when: item in var_list
+
+- name: Set variable if not already defined or value is the default  # noqa var-naming
+  ansible.builtin.set_fact:
+    "{{ item.key }}": "{{ item.value }}"
+  when: vars[item.key] is undefined or (__defaults_vars[item.key] is defined and vars[item.key] != __defaults_vars[item.key])
+  loop: "{{ __defaults_vars | dict2items }}"
+  loop_control:
+    label:
+      - "{{ item.key }}: {{ item.value }}"

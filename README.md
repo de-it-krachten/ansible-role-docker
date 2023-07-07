@@ -31,6 +31,8 @@ Supported platforms
 - OracleLinux 9
 - AlmaLinux 8
 - AlmaLinux 9
+- SUSE Linux Enterprise<sup>1</sup>
+- openSUSE Leap 15
 - Debian 10 (Buster)
 - Debian 11 (Bullseye)
 - Ubuntu 20.04 LTS
@@ -69,8 +71,10 @@ docker:
     repo_url: https://download.docker.com/linux/fedora/docker-ce.repo
     gpg_key: https://download.docker.com/linux/fedora/gpg
   Debian:
+    repo_url: https://download.docker.com/linux/debian
     gpg_key: https://download.docker.com/linux/debian/gpg
   Ubuntu:
+    repo_url: https://download.docker.com/linux/ubuntu
     gpg_key: https://download.docker.com/linux/ubuntu/gpg
 
 # Should swarm be configured
@@ -111,6 +115,19 @@ docker_lvm: false
 
 # Enable networking from container -> outsite-world
 docker_networking_outbound: false
+
+## Proxy configuration (for Docker itself)
+# docker_http_proxy: http://192.168.1.1:8080
+# docker_https_proxy: http://192.168.1.1:8080
+# docker_no_proxy: "localhost, 127.0.0.*"
+
+# Activate this boolean to force container to use proxy
+docker_proxy_containers: false
+docker_proxy_container_settings:
+  proxies:
+    "http-proxy": "{{ docker_http_proxy | default('') }}"
+    "https-proxy": "{{ docker_https_proxy | default('') }}"
+    "no-proxy": "{{ docker_no_proxy | default('') }}"
 
 # Docker API
 docker_api: false
@@ -174,40 +191,34 @@ docker_arch_mapping:
   aarch64: "arm64"
   x86_64: "amd64"
   i386: "i386"
-</pre></code>
 
 
-### vars/family-Debian.yml
-<pre><code>
-# OS release
-# docker_os_release: "{{ ansible_distribution_major_version }}"
+# -------------------------------------------------
+# Apt specific settings
+# -------------------------------------------------
 
-# Docker CE packages
-docker_packages:
-  - docker-ce
-
-# Docker URL
-docker_repo_url: https://download.docker.com/linux
+# Lookup the value we need for Debian/apt
+docker_apt_arch: "{{ docker_arch_mapping[ansible_architecture] }}"
 
 # Docker release channel
 docker_apt_release_channel: stable
 
-# Docker architecture
-docker_apt_arch: "{{ docker_arch_mapping[ansible_architecture] }}"
-
-# Docker APT repostory
-docker_apt_repository: >-
-  deb [arch={{ docker_apt_arch }}] {{ docker_repo_url }}/{{ ansible_distribution | lower }}
-  {{ ansible_distribution_release }} {{ docker_apt_release_channel }}
-
 # APT key error ignore?
 docker_apt_ignore_key_error: true
 
+# Docker
+docker_apt_repo_url: https://download.docker.com/linux
+
 # APT GPG url
-docker_apt_gpg_key: "{{ docker_repo_url }}/{{ ansible_distribution | lower }}/gpg"
+docker_apt_gpg_key: "{{ docker_apt_repo_url }}/{{ ansible_distribution | lower }}/gpg"
+
+# Docker APT repostory
+docker_apt_repository: >-
+  deb [arch={{ docker_apt_arch }}] {{ docker[ansible_distribution]['repo_url'] }}
+  {{ ansible_distribution_release }} {{ docker_apt_release_channel }}
 </pre></code>
 
-### vars/family-RedHat.yml
+### defaults/family-Debian.yml
 <pre><code>
 # OS release
 # docker_os_release: "{{ ansible_distribution_major_version }}"
@@ -216,6 +227,27 @@ docker_apt_gpg_key: "{{ docker_repo_url }}/{{ ansible_distribution | lower }}/gp
 docker_packages:
   - docker-ce
 </pre></code>
+
+### defaults/family-Suse.yml
+<pre><code>
+# OS release
+# docker_os_release: "{{ ansible_distribution_major_version }}"
+
+# Docker CE packages
+docker_packages:
+  - docker
+</pre></code>
+
+### defaults/family-RedHat.yml
+<pre><code>
+# OS release
+# docker_os_release: "{{ ansible_distribution_major_version }}"
+
+# Docker CE packages
+docker_packages:
+  - docker-ce
+</pre></code>
+
 
 
 
