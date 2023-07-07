@@ -1,3 +1,11 @@
+# [1.10.0](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.9.0...v1.10.0) (2023-07-07)
+
+
+### Features
+
+* Add proxy support ([2768bfd](https://github.com/de-it-krachten/ansible-role-docker/commit/2768bfd9348800f09a40974145a7c29894bb0861))
+* Add support for SLES/OpenSUSE Leap 15 ([f2b80bb](https://github.com/de-it-krachten/ansible-role-docker/commit/f2b80bbfc8ae0601d9f441778e62bb0220ffec42))
+
 # [1.9.0](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.8.0...v1.9.0) (2023-06-28)
 
 
