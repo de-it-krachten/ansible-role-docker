@@ -82,6 +82,8 @@ docker_proxy_container_settings:
     "http-proxy": "{{ docker_http_proxy | default('') }}"
     "https-proxy": "{{ docker_https_proxy | default('') }}"
     "no-proxy": "{{ docker_no_proxy | default('') }}"
+docker_proxy_container_settings_clear:
+  proxies: {}
 
 # Docker API
 docker_api: false

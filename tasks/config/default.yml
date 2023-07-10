@@ -43,14 +43,26 @@
       ansible.builtin.set_fact:
         docker_daemon_api: "{{ docker_daemon_api_tls if docker_api_tls else docker_daemon_api_notls }}"
 
+    - name: Merge existing and new settings
+      ansible.builtin.set_fact:
+        docker_daemon_options: "{{ docker_daemon_options | combine(docker_daemon_api) }}"
+
+# ---------------------------------------------------------
+# Proxy
+# ---------------------------------------------------------
+
+- name: Define proxy settings
+  block:
+
     - name: Add docker proxy settings for containers
       ansible.builtin.set_fact:
         docker_daemon_options: "{{ docker_daemon_options | combine(docker_proxy_container_settings) }}"
       when: docker_proxy_containers | bool
 
-    - name: Merge existing and new settings
+    - name: Remove docker proxy settings for containers
       ansible.builtin.set_fact:
-        docker_daemon_options: "{{ docker_daemon_options | combine(docker_daemon_api) }}"
+        docker_daemon_options: "{{ docker_daemon_options | combine(docker_proxy_container_settings_clear) }}"
+      when: not docker_proxy_containers | bool
 
 
 # ---------------------------------------------------------
@@ -62,8 +74,7 @@
     dest: /etc/docker/daemon.json
     content: "{{ docker_daemon_options | to_nice_json }}"
     mode: '0644'
-  register: docker_daemon
-
+  notify: Restart docker
 
 # ---------------------------------------------------------
 # Systemd
@@ -81,7 +92,7 @@
     src: "override.conf.j2"
     dest: /etc/systemd/system/docker.service.d/override.conf
     mode: '0644'
-  register: docker_service
+  notify: Restart docker
 
 - name: Configure docker to use HTTP proxy
   ansible.builtin.copy:
@@ -92,18 +103,22 @@
       Environment="NO_PROXY={{ docker_no_proxy }}"
     dest: /etc/systemd/system/docker.service.d/http-proxy.conf
     mode: "0644"
-  when: docker_http_proxy is defined
-  register: docker_proxy
+  when: docker_http_proxy is defined and docker_http_proxy | length > 0
+  notify: Restart docker
+
+- name: Unconfigure docker to use HTTP proxy
+  ansible.builtin.file:
+    path: /etc/systemd/system/docker.service.d/http-proxy.conf
+    state: absent
+  when: docker_http_proxy is undefined or docker_http_proxy | length == 0
+  notify: Restart docker
 
 - name: Force systemd to reread configs
   ansible.builtin.systemd:
     daemon_reload: yes
 
-- name: Restart Docker when configuration changes
-  ansible.builtin.service:
-    name: docker
-    state: restarted
-  when: docker_daemon.changed | bool or docker_service.changed | bool or docker_proxy.changed | bool  # noqa no-handler
+- name: Flush handlers
+  meta: flush_handlers
 
 
 # ---------------------------------------------------------

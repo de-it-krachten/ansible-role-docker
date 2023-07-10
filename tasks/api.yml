@@ -63,8 +63,7 @@
     path: /etc/systemd/system/docker.service
     regexp: "^ExecStart=.*"
     replace: "{{ docker_command }}"
-  notify:
-    - Restart docker
+  notify: Restart docker
 
 - name: Open firewall if listen address is not 127.0.0.1
   ansible.builtin.include_role:
