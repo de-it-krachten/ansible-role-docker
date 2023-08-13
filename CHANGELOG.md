@@ -1,3 +1,10 @@
+## [1.10.1](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.10.0...v1.10.1) (2023-08-13)
+
+
+### Bug Fixes
+
+* Implement proxy settings removal ([439ebb1](https://github.com/de-it-krachten/ansible-role-docker/commit/439ebb16f57b370e3ffabb028707a40a17650c7a))
+
 # [1.10.0](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.9.0...v1.10.0) (2023-07-07)
 
 
