@@ -1,3 +1,10 @@
+## [1.11.1](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.11.0...v1.11.1) (2023-09-08)
+
+
+### Bug Fixes
+
+* Fix loop label to string ([9b08c60](https://github.com/de-it-krachten/ansible-role-docker/commit/9b08c60db4976eb43cd096311b43d7e961762043))
+
 # [1.11.0](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.10.1...v1.11.0) (2023-08-14)
 
 
