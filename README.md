@@ -13,7 +13,6 @@ Installs & configures Docker CE
 None
 
 #### Collections
-- community.general
 - ansible.posix
 - community.docker
 
@@ -33,7 +32,6 @@ Supported platforms
 - AlmaLinux 9
 - SUSE Linux Enterprise 15<sup>1</sup>
 - openSUSE Leap 15
-- Debian 10 (Buster)<sup>1</sup>
 - Debian 11 (Bullseye)
 - Debian 12 (Bookworm)
 - Ubuntu 20.04 LTS
@@ -221,7 +219,7 @@ docker_apt_repository: >-
   {{ ansible_distribution_release }} {{ docker_apt_release_channel }}
 </pre></code>
 
-### defaults/family-Debian.yml
+### defaults/family-RedHat.yml
 <pre><code>
 # OS release
 # docker_os_release: "{{ ansible_distribution_major_version }}"
@@ -241,7 +239,7 @@ docker_packages:
   - docker
 </pre></code>
 
-### defaults/family-RedHat.yml
+### defaults/family-Debian.yml
 <pre><code>
 # OS release
 # docker_os_release: "{{ ansible_distribution_major_version }}"
@@ -259,13 +257,17 @@ docker_packages:
 <pre><code>
 - name: sample playbook for role 'docker'
   hosts: all
-  become: "yes"
+  become: 'yes'
   vars:
-    docker_lvm: False
+    docker_lvm: false
     docker_vg: dockervg
     docker_pv: /dev/sdb
     docker_root: /export/docker
-    docker_lvm_setup: "{'vg': [{'name': '{{ docker_vg }}', 'pv': '{{ docker_pv }}'}], 'lv': [{'name': 'lv_docker', 'vg': '{{ docker_vg }}', 'size': '10G', 'mp': '/var/lib/docker', 'fstype': 'xfs'}, {'name': 'lv_docker_data', 'vg': '{{ docker_vg }}', 'size': '10G', 'mp': '{{ docker_root }}', 'fstype': 'xfs'}]}"
+    docker_lvm_setup: '{''vg'': [{''name'': ''{{ docker_vg }}'', ''pv'': ''{{ docker_pv
+      }}''}], ''lv'': [{''name'': ''lv_docker'', ''vg'': ''{{ docker_vg }}'', ''size'':
+      ''10G'', ''mp'': ''/var/lib/docker'', ''fstype'': ''xfs''}, {''name'': ''lv_docker_data'',
+      ''vg'': ''{{ docker_vg }}'', ''size'': ''10G'', ''mp'': ''{{ docker_root }}'',
+      ''fstype'': ''xfs''}]}'
   tasks:
     - name: Include role 'docker'
       ansible.builtin.include_role:
