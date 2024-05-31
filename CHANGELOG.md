@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.11.1...v1.12.0) (2024-05-31)
+
+
+### Features
+
+* Add support for Ubuntu 24.04 LTS + Fedora 40 ([559e305](https://github.com/de-it-krachten/ansible-role-docker/commit/559e30506279f905b6e75a9f47ef9f2a3c045a8d))
+
 ## [1.11.1](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.11.0...v1.11.1) (2023-09-08)
 
 
