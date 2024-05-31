@@ -36,8 +36,9 @@ Supported platforms
 - Debian 12 (Bookworm)
 - Ubuntu 20.04 LTS
 - Ubuntu 22.04 LTS
-- Fedora 37
-- Fedora 38
+- Ubuntu 24.04 LTS
+- Fedora 39
+- Fedora 40
 
 Note:
 <sup>1</sup> : no automated testing is performed on these platforms
@@ -219,6 +220,16 @@ docker_apt_repository: >-
   {{ ansible_distribution_release }} {{ docker_apt_release_channel }}
 </pre></code>
 
+### defaults/family-Debian.yml
+<pre><code>
+# OS release
+# docker_os_release: "{{ ansible_distribution_major_version }}"
+
+# Docker CE packages
+docker_packages:
+  - docker-ce
+</pre></code>
+
 ### defaults/family-RedHat.yml
 <pre><code>
 # OS release
@@ -237,16 +248,6 @@ docker_packages:
 # Docker CE packages
 docker_packages:
   - docker
-</pre></code>
-
-### defaults/family-Debian.yml
-<pre><code>
-# OS release
-# docker_os_release: "{{ ansible_distribution_major_version }}"
-
-# Docker CE packages
-docker_packages:
-  - docker-ce
 </pre></code>
 
 
