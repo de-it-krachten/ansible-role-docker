@@ -1,18 +1,16 @@
 ---
 
-- name: Install prerequisites
+- name: Install prerequisites (RHEL7)
   ansible.builtin.yum:
-    name:
-      - yum-utils
-      - device-mapper-persistent-data
-      - lvm2
-      # - gcc
-      # - glibc-devel
-      # - python
-      # - python-libs
-      # - python-devel
-      # - python-pip
+    name: "{{ docker_packages_prereqs }}"
     state: present
+  when: ansible_distribution_major_version | int == 7
+
+- name: Install prerequisites (RHEL8+/Fedora)
+  ansible.builtin.dnf:
+    name: "{{ docker_packages_prereqs }}"
+    state: present
+  when: ansible_distribution_major_version | int >= 8
 
 # - name: Get pip version
 #   command: pip --version
