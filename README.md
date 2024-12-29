@@ -15,12 +15,12 @@ None
 #### Collections
 - ansible.posix
 - community.docker
+- community.general
 
 ## Platforms
 
 Supported platforms
 
-- Red Hat Enterprise Linux 7<sup>1</sup>
 - Red Hat Enterprise Linux 8<sup>1</sup>
 - Red Hat Enterprise Linux 9<sup>1</sup>
 - CentOS 7<sup>1</sup>
@@ -37,8 +37,8 @@ Supported platforms
 - Ubuntu 20.04 LTS
 - Ubuntu 22.04 LTS
 - Ubuntu 24.04 LTS
-- Fedora 39
 - Fedora 40
+- Fedora 41
 
 Note:
 <sup>1</sup> : no automated testing is performed on these platforms
@@ -228,6 +228,14 @@ docker_apt_repository: >-
 # Docker CE packages
 docker_packages:
   - docker-ce
+
+# List of required packages before installing Docker
+docker_packages_prereqs:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg
+  - lsb-release
 </pre></code>
 
 ### defaults/family-RedHat.yml
@@ -238,6 +246,18 @@ docker_packages:
 # Docker CE packages
 docker_packages:
   - docker-ce
+
+# List of required packages before installing Docker
+docker_packages_prereqs:
+  - yum-utils
+  - device-mapper-persistent-data
+  - lvm2
+  # - gcc
+  # - glibc-devel
+  # - python
+  # - python-libs
+  # - python-devel
+  # - python-pip
 </pre></code>
 
 ### defaults/family-Suse.yml
@@ -248,6 +268,9 @@ docker_packages:
 # Docker CE packages
 docker_packages:
   - docker
+
+# List of required packages befoer installing Docker
+docker_packages_prereqs: []
 </pre></code>
 
 

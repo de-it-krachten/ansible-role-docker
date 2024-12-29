@@ -30,23 +30,49 @@
     replace: '{{ docker_os_release }}'
   when: docker_os_release is defined
 
-- name: Remove obsolete Docker package
-  ansible.builtin.yum:
-    name: "{{ package }}"
-    state: absent
-  loop: "{{ docker_packages_remove }}"
-  loop_control:
-    loop_var: package
+- name: RHEL7
+  when: ansible_distribution_major_version | int == 7
   become: yes
+  tags: molecule-idempotence-notest
+  block:
 
-- name: Install Docker
-  ansible.builtin.yum:
-    name: "{{ package }}"
-    state: present
-  loop: "{{ docker_packages }}"
-  loop_control:
-    loop_var: package
+    - name: Remove obsolete Docker package (RHEL7)
+      ansible.builtin.yum:
+        name: "{{ package }}"
+        state: absent
+      loop: "{{ docker_packages_remove }}"
+      loop_control:
+        loop_var: package
+
+    - name: Install Docker (RHEL7)
+      ansible.builtin.yum:
+        name: "{{ package }}"
+        state: present
+      loop: "{{ docker_packages }}"
+      loop_control:
+        loop_var: package
+
+- name: RHEL8+/Fedora
+  when: ansible_distribution_major_version | int >= 8
+  tags: molecule-idempotence-notest
   become: yes
+  block:
+
+    - name: Remove obsolete Docker package (RHEL8+/Fedora)
+      ansible.builtin.dnf:
+        name: "{{ package }}"
+        state: absent
+      loop: "{{ docker_packages_remove }}"
+      loop_control:
+        loop_var: package
+
+    - name: Install Docker (RHEL8+/Fedora)
+      ansible.builtin.dnf:
+        name: "{{ package }}"
+        state: present
+      loop: "{{ docker_packages }}"
+      loop_control:
+        loop_var: package
 
 - name: Start Docker service
   ansible.builtin.service:

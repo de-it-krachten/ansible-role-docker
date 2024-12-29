@@ -6,3 +6,15 @@
 # Docker CE packages
 docker_packages:
   - docker-ce
+
+# List of required packages before installing Docker
+docker_packages_prereqs:
+  - yum-utils
+  - device-mapper-persistent-data
+  - lvm2
+  # - gcc
+  # - glibc-devel
+  # - python
+  # - python-libs
+  # - python-devel
+  # - python-pip

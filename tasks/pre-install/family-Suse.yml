@@ -1,1 +1,6 @@
 ---
+
+- name: Install prerequisites
+  community.general.zypper:
+    name: "{{ docker_packages_prereqs }}"
+    state: present

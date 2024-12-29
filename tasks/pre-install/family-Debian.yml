@@ -1,13 +1,6 @@
 ---
 
 - name: Install prerequisites
-  ansible.builtin.package:
-    name: "{{ packages }}"
+  ansible.builtin.apt:
+    name: "{{ docker_packages_prereqs }}"
     state: present
-  vars:
-    packages:
-      - apt-transport-https
-      - ca-certificates
-      - curl
-      - gnupg
-      - lsb-release

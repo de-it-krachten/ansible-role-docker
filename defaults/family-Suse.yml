@@ -6,3 +6,6 @@
 # Docker CE packages
 docker_packages:
   - docker
+
+# List of required packages befoer installing Docker
+docker_packages_prereqs: []

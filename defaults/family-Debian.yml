@@ -6,3 +6,11 @@
 # Docker CE packages
 docker_packages:
   - docker-ce
+
+# List of required packages before installing Docker
+docker_packages_prereqs:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg
+  - lsb-release
