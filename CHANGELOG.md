@@ -1,3 +1,10 @@
+# [1.13.0](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.12.0...v1.13.0) (2024-12-29)
+
+
+### Features
+
+* Update supported platforms & CI ([9d19a00](https://github.com/de-it-krachten/ansible-role-docker/commit/9d19a00b6bd0a0be451cac9cf22404634e11a387))
+
 # [1.12.0](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.11.1...v1.12.0) (2024-05-31)
 
 
