@@ -221,8 +221,18 @@ docker_apt_gpg_key: "{{ docker_apt_repo_url }}/{{ ansible_distribution | lower }
 
 # Docker APT repostory
 docker_apt_repository: >-
-  deb [arch={{ docker_apt_arch }}] {{ docker[ansible_distribution]['repo_url'] }}
-  {{ ansible_distribution_release }} {{ docker_apt_release_channel }}
+  deb
+  [arch={{ docker_apt_arch }}]
+  {{ docker[ansible_distribution]['repo_url'] }}
+  {{ ansible_distribution_release }}
+  {{ docker_apt_release_channel }}
+
+docker_apt_repository_12: >-
+  deb
+  [signed-by=/etc/apt/trusted.gpg.d/docker.gpg]
+  {{ docker[ansible_distribution]['repo_url'] }}
+  {{ ansible_distribution_release }}
+  {{ docker_apt_release_channel }}
 </pre></code>
 
 ### defaults/family-Debian.yml
@@ -233,6 +243,7 @@ docker_apt_repository: >-
 # Docker CE packages
 docker_packages:
   - docker-ce
+  - python3-docker
 
 # List of required packages before installing Docker
 docker_packages_prereqs:
@@ -241,6 +252,9 @@ docker_packages_prereqs:
   - curl
   - gnupg
   - lsb-release
+
+# Pypi packages
+docker_pip: []
 </pre></code>
 
 ### defaults/family-RedHat.yml
