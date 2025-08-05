@@ -54,7 +54,7 @@ docker_daemon_options: {}
 # -----------------------------------------
 
 # Should cgroups v2 be enabled (Fedora only)
-docker_cgroups_v2: false
+docker_cgroups_v2: true
 
 
 # -----------------------------------------
