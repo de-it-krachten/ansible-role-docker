@@ -36,7 +36,7 @@
   tags: molecule-idempotence-notest
   block:
 
-    - name: Remove obsolete Docker package (RHEL7)
+    - name: Remove obsolete Docker package (RHEL7)  # noqa fqcn[action-core]
       ansible.builtin.yum:
         name: "{{ package }}"
         state: absent
@@ -44,7 +44,7 @@
       loop_control:
         loop_var: package
 
-    - name: Install Docker (RHEL7)
+    - name: Install Docker (RHEL7)  # noqa fqcn[action-core]
       ansible.builtin.yum:
         name: "{{ package }}"
         state: present

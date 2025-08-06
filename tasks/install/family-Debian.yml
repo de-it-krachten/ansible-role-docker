@@ -12,6 +12,11 @@
   check_mode: no
   changed_when: false
 
+- name: Convert APT key into binary format
+  ansible.builtin.command:
+    cmd: gpg --batch --yes --no-tty --dearmor -o /tmp/docker1.gpg /tmp/docker.gpg
+  changed_when: false
+
 - name: Retrieve fingerprint from key
   ansible.builtin.shell: |
     set -o pipefail
@@ -32,24 +37,43 @@
     id: "0x{{ __gpg_fpr.stdout }}"
     state: absent
     keyring: /etc/apt/trusted.gpg
+  when: ansible_distribution_major_version | int < 13
 
 - name: Import APT signing key into the proper drop-in directory
   ansible.builtin.apt_key:
     file: /tmp/docker.gpg
     state: present
     keyring: /etc/apt/trusted.gpg.d/docker.gpg
+  when: ansible_distribution_major_version | int < 12
+
+- name: Copy APT signing key into the proper drop-in directory
+  ansible.builtin.copy:
+    src: /tmp/docker1.gpg
+    dest: /etc/apt/trusted.gpg.d/docker.gpg
+    remote_src: yes
+    mode: "0644"
+  when: ansible_distribution_major_version | int >= 12
 
 - name: Delete obsolete repository file
   ansible.builtin.file:
     path: /etc/apt/sources.list.d/download_docker_com_linux_debian.list
     state: absent
 
-- name: Setup repository definition
+- name: Setup repository definition (10/11)
   ansible.builtin.apt_repository:
     filename: docker-ce
     repo: "{{ docker_apt_repository }}"
     state: present
     update_cache: true
+  when: ansible_distribution_major_version | int < 12
+
+- name: Setup repository definition (12+)
+  ansible.builtin.apt_repository:
+    filename: docker-ce
+    repo: "{{ docker_apt_repository_12 }}"
+    state: present
+    update_cache: true
+  when: ansible_distribution_major_version | int >= 12
 
 - name: Install Docker
   ansible.builtin.package:

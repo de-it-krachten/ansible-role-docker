@@ -23,22 +23,27 @@ Supported platforms
 
 - Red Hat Enterprise Linux 8<sup>1</sup>
 - Red Hat Enterprise Linux 9<sup>1</sup>
+- Red Hat Enterprise Linux 10<sup>1</sup>
 - CentOS 7<sup>1</sup>
 - RockyLinux 8
 - RockyLinux 9
+- RockyLinux 10
 - OracleLinux 8
 - OracleLinux 9
+- OracleLinux 10
 - AlmaLinux 8
 - AlmaLinux 9
+- AlmaLinux 10
 - SUSE Linux Enterprise 15<sup>1</sup>
 - openSUSE Leap 15
 - Debian 11 (Bullseye)
 - Debian 12 (Bookworm)
+- Debian 13 (Trixie)
 - Ubuntu 20.04 LTS
 - Ubuntu 22.04 LTS
 - Ubuntu 24.04 LTS
-- Fedora 40
 - Fedora 41
+- Fedora 42
 
 Note:
 <sup>1</sup> : no automated testing is performed on these platforms
@@ -100,7 +105,7 @@ docker_daemon_options: {}
 # -----------------------------------------
 
 # Should cgroups v2 be enabled (Fedora only)
-docker_cgroups_v2: false
+docker_cgroups_v2: true
 
 
 # -----------------------------------------
@@ -216,8 +221,18 @@ docker_apt_gpg_key: "{{ docker_apt_repo_url }}/{{ ansible_distribution | lower }
 
 # Docker APT repostory
 docker_apt_repository: >-
-  deb [arch={{ docker_apt_arch }}] {{ docker[ansible_distribution]['repo_url'] }}
-  {{ ansible_distribution_release }} {{ docker_apt_release_channel }}
+  deb
+  [arch={{ docker_apt_arch }}]
+  {{ docker[ansible_distribution]['repo_url'] }}
+  {{ ansible_distribution_release }}
+  {{ docker_apt_release_channel }}
+
+docker_apt_repository_12: >-
+  deb
+  [signed-by=/etc/apt/trusted.gpg.d/docker.gpg]
+  {{ docker[ansible_distribution]['repo_url'] }}
+  {{ ansible_distribution_release }}
+  {{ docker_apt_release_channel }}
 </pre></code>
 
 ### defaults/family-Debian.yml
@@ -228,6 +243,7 @@ docker_apt_repository: >-
 # Docker CE packages
 docker_packages:
   - docker-ce
+  - python3-docker
 
 # List of required packages before installing Docker
 docker_packages_prereqs:
@@ -236,6 +252,9 @@ docker_packages_prereqs:
   - curl
   - gnupg
   - lsb-release
+
+# Pypi packages
+docker_pip: []
 </pre></code>
 
 ### defaults/family-RedHat.yml

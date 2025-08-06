@@ -54,7 +54,7 @@ docker_daemon_options: {}
 # -----------------------------------------
 
 # Should cgroups v2 be enabled (Fedora only)
-docker_cgroups_v2: false
+docker_cgroups_v2: true
 
 
 # -----------------------------------------
@@ -170,5 +170,15 @@ docker_apt_gpg_key: "{{ docker_apt_repo_url }}/{{ ansible_distribution | lower }
 
 # Docker APT repostory
 docker_apt_repository: >-
-  deb [arch={{ docker_apt_arch }}] {{ docker[ansible_distribution]['repo_url'] }}
-  {{ ansible_distribution_release }} {{ docker_apt_release_channel }}
+  deb
+  [arch={{ docker_apt_arch }}]
+  {{ docker[ansible_distribution]['repo_url'] }}
+  {{ ansible_distribution_release }}
+  {{ docker_apt_release_channel }}
+
+docker_apt_repository_12: >-
+  deb
+  [signed-by=/etc/apt/trusted.gpg.d/docker.gpg]
+  {{ docker[ansible_distribution]['repo_url'] }}
+  {{ ansible_distribution_release }}
+  {{ docker_apt_release_channel }}

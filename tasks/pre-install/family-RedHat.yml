@@ -1,6 +1,6 @@
 ---
 
-- name: Install prerequisites (RHEL7)
+- name: Install prerequisites (RHEL7)  # noqa fqcn[action-core]
   ansible.builtin.yum:
     name: "{{ docker_packages_prereqs }}"
     state: present
