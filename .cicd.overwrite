@@ -10,14 +10,23 @@ generic:
 # Supported platforms
 platforms:
   centos7:
+    supported: true
     ci: false
-    supported: true
-  opensuse15:
-    ci: true
-    supported: true
   sles15:
-    ci: false
     supported: true
+    ci: false
+  sles16:
+    supported: true
+    ci: false
+  opensuse15:
+    supported: true
+    ci: true
+  opensuse16:
+    supported: true
+    ci: true
+  ubuntu2004:
+    supported: true
+    ci: true
 
 # Molecule
 molecule:
