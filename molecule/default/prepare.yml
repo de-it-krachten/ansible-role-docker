@@ -46,6 +46,8 @@
       - opensuse16
 
     systemctl_alternative: False
+    activate_epel: True
+    install_python: True
   roles:
     - { role: deitkrachten.facts, when: ansible_os_family != 'Windows' }
     - deitkrachten.showinfo

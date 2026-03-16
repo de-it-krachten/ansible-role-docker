@@ -18,6 +18,10 @@ platforms:
 
 # Molecule
 molecule:
+  prepare:
+    vars:
+      activate_epel: true
+      install_python: true
   converge:
     vars:
       docker_lvm: false
