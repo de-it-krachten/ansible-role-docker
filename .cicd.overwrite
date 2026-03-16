@@ -10,17 +10,18 @@ generic:
 # Supported platforms
 platforms:
   centos7:
-    ci: false
     supported: true
-  opensuse15:
+    ci: false
+  ubuntu2004:
+    supported: true
     ci: true
-    supported: true
-  sles15:
-    ci: false
-    supported: true
 
 # Molecule
 molecule:
+  prepare:
+    vars:
+      activate_epel: true
+      install_python: true
   converge:
     vars:
       docker_lvm: false

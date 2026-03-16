@@ -4,6 +4,7 @@
   hosts: all
   become: "yes"
   vars:
+    molecule_driver: "{{ lookup('env', 'MOLECULE_DRIVER_NAME') }}"
     docker_lvm: False
     docker_vg: dockervg
     docker_pv: /dev/sdb
