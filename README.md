@@ -40,8 +40,9 @@ Supported platforms
 - Ubuntu 20.04 LTS
 - Ubuntu 22.04 LTS
 - Ubuntu 24.04 LTS
-- Fedora 42
+- Ubuntu 26.04 LTS
 - Fedora 43
+- Fedora 44<sup>1</sup>
 
 Note:
 <sup>1</sup> : no automated testing is performed on these platforms
@@ -216,28 +217,28 @@ docker_apt_ignore_key_error: true
 docker_apt_repo_url: https://download.docker.com/linux
 
 # APT GPG url
-docker_apt_gpg_key: "{{ docker_apt_repo_url }}/{{ ansible_distribution | lower }}/gpg"
+docker_apt_gpg_key: "{{ docker_apt_repo_url }}/{{ ansible_facts.distribution | lower }}/gpg"
 
 # Docker APT repostory
 docker_apt_repository: >-
   deb
   [arch={{ docker_apt_arch }}]
-  {{ docker[ansible_distribution]['repo_url'] }}
-  {{ ansible_distribution_release }}
+  {{ docker[ansible_facts.distribution]['repo_url'] }}
+  {{ ansible_facts.distribution_release }}
   {{ docker_apt_release_channel }}
 
 docker_apt_repository_12: >-
   deb
   [signed-by=/etc/apt/trusted.gpg.d/docker.gpg]
-  {{ docker[ansible_distribution]['repo_url'] }}
-  {{ ansible_distribution_release }}
+  {{ docker[ansible_facts.distribution]['repo_url'] }}
+  {{ ansible_facts.distribution_release }}
   {{ docker_apt_release_channel }}
 </pre></code>
 
 ### defaults/family-Debian.yml
 <pre><code>
 # OS release
-# docker_os_release: "{{ ansible_distribution_major_version }}"
+# docker_os_release: "{{ ansible_facts.distribution_major_version }}"
 
 # Docker CE packages
 docker_packages:
@@ -259,7 +260,7 @@ docker_pip: []
 ### defaults/family-RedHat.yml
 <pre><code>
 # OS release
-# docker_os_release: "{{ ansible_distribution_major_version }}"
+# docker_os_release: "{{ ansible_facts.distribution_major_version }}"
 
 # Docker CE packages
 docker_packages:
@@ -281,7 +282,7 @@ docker_packages_prereqs:
 ### defaults/family-Suse.yml
 <pre><code>
 # OS release
-# docker_os_release: "{{ ansible_distribution_major_version }}"
+# docker_os_release: "{{ ansible_facts.distribution_major_version }}"
 
 # Docker CE packages
 docker_packages:
