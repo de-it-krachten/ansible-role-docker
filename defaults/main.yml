@@ -154,7 +154,7 @@ docker_arch_mapping:
 # -------------------------------------------------
 
 # Lookup the value we need for Debian/apt
-docker_apt_arch: "{{ docker_arch_mapping[ansible_architecture] }}"
+docker_apt_arch: "{{ docker_arch_mapping[ansible_facts.architecture] }}"
 
 # Docker release channel
 docker_apt_release_channel: stable
