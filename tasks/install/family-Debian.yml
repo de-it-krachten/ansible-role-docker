@@ -2,7 +2,7 @@
 
 - name: Download APT signing key
   ansible.builtin.get_url:
-    url: "{{ docker[ansible_distribution]['gpg_key'] }}"
+    url: "{{ docker[ansible_facts.distribution]['gpg_key'] }}"
     dest: /tmp/docker.gpg
     validate_certs: false
     mode: "0644"
@@ -37,14 +37,14 @@
     id: "0x{{ __gpg_fpr.stdout }}"
     state: absent
     keyring: /etc/apt/trusted.gpg
-  when: ansible_distribution_major_version | int < 13
+  when: ansible_facts.distribution_major_version | int < 13
 
 - name: Import APT signing key into the proper drop-in directory
   ansible.builtin.apt_key:
     file: /tmp/docker.gpg
     state: present
     keyring: /etc/apt/trusted.gpg.d/docker.gpg
-  when: ansible_distribution_major_version | int < 12
+  when: ansible_facts.distribution_major_version | int < 12
 
 - name: Copy APT signing key into the proper drop-in directory
   ansible.builtin.copy:
@@ -52,7 +52,7 @@
     dest: /etc/apt/trusted.gpg.d/docker.gpg
     remote_src: yes
     mode: "0644"
-  when: ansible_distribution_major_version | int >= 12
+  when: ansible_facts.distribution_major_version | int >= 12
 
 - name: Delete obsolete repository file
   ansible.builtin.file:
@@ -65,7 +65,7 @@
     repo: "{{ docker_apt_repository }}"
     state: present
     update_cache: true
-  when: ansible_distribution_major_version | int < 12
+  when: ansible_facts.distribution_major_version | int < 12
 
 - name: Setup repository definition (12+)
   ansible.builtin.apt_repository:
@@ -73,7 +73,7 @@
     repo: "{{ docker_apt_repository_12 }}"
     state: present
     update_cache: true
-  when: ansible_distribution_major_version | int >= 12
+  when: ansible_facts.distribution_major_version | int >= 12
 
 - name: Install Docker
   ansible.builtin.package:
