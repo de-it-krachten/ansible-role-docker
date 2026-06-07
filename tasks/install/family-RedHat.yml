@@ -81,6 +81,8 @@
     enabled: yes
   become: yes
 
+- debug: var=ansible_python_interpreter
+
 - name: Install pip modules
   ansible.builtin.pip:
     name: "{{ package }}"
