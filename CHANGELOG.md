@@ -1,3 +1,18 @@
+# [1.16.0](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.15.0...v1.16.0) (2026-07-23)
+
+
+### Bug Fixes
+
+* Standarize vars.yml ([a2c863a](https://github.com/de-it-krachten/ansible-role-docker/commit/a2c863af3c30a2c8ad07959c87b7ce78ef6e983c))
+
+
+### Features
+
+* Add support for ansible-core 2.20+ ([6e30cde](https://github.com/de-it-krachten/ansible-role-docker/commit/6e30cdef6315143ea72064072c8c6b6bd43b3a69))
+* Added support for Fedora 44 ([c9bcf46](https://github.com/de-it-krachten/ansible-role-docker/commit/c9bcf468e34ecc50797fdd4a96d3b66356b1f06f))
+* Added support for Ubuntu 26.04 LTS ([10f9f85](https://github.com/de-it-krachten/ansible-role-docker/commit/10f9f852ca6a6290e003e5a51e67a5e3d96cabc3))
+* Drop support for Fedora 42 ([122c84d](https://github.com/de-it-krachten/ansible-role-docker/commit/122c84db91c66daeb472e0f7df2745fd6e28619b))
+
 # [1.15.0](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.14.0...v1.15.0) (2026-03-16)
 
 
