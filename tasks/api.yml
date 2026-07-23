@@ -56,7 +56,7 @@
 - name: Strip socket when running in Docker (like molecule)
   ansible.builtin.set_fact:
     docker_command: "{{ docker_command | regex_replace('-H fd:// ', '') }}"
-  when: ansible_virtualization_type == "docker"
+  when: ansible_facts.virtualization_type == "docker"
 
 - name: Activate Docker API through service file
   ansible.builtin.replace:

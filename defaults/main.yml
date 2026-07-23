@@ -154,7 +154,7 @@ docker_arch_mapping:
 # -------------------------------------------------
 
 # Lookup the value we need for Debian/apt
-docker_apt_arch: "{{ docker_arch_mapping[ansible_architecture] }}"
+docker_apt_arch: "{{ docker_arch_mapping[ansible_facts.architecture] }}"
 
 # Docker release channel
 docker_apt_release_channel: stable
@@ -166,19 +166,19 @@ docker_apt_ignore_key_error: true
 docker_apt_repo_url: https://download.docker.com/linux
 
 # APT GPG url
-docker_apt_gpg_key: "{{ docker_apt_repo_url }}/{{ ansible_distribution | lower }}/gpg"
+docker_apt_gpg_key: "{{ docker_apt_repo_url }}/{{ ansible_facts.distribution | lower }}/gpg"
 
 # Docker APT repostory
 docker_apt_repository: >-
   deb
   [arch={{ docker_apt_arch }}]
-  {{ docker[ansible_distribution]['repo_url'] }}
-  {{ ansible_distribution_release }}
+  {{ docker[ansible_facts.distribution]['repo_url'] }}
+  {{ ansible_facts.distribution_release }}
   {{ docker_apt_release_channel }}
 
 docker_apt_repository_12: >-
   deb
   [signed-by=/etc/apt/trusted.gpg.d/docker.gpg]
-  {{ docker[ansible_distribution]['repo_url'] }}
-  {{ ansible_distribution_release }}
+  {{ docker[ansible_facts.distribution]['repo_url'] }}
+  {{ ansible_facts.distribution_release }}
   {{ docker_apt_release_channel }}

@@ -2,7 +2,7 @@
 
 - name: Download RPM signing key
   ansible.builtin.get_url:
-    url: "{{ docker[ansible_distribution]['gpg_key'] }}"
+    url: "{{ docker[ansible_facts.distribution]['gpg_key'] }}"
     dest: /tmp/docker.gpg
     validate_certs: false
     mode: "0644"
@@ -19,7 +19,7 @@
 
 - name: Download repo definition
   ansible.builtin.get_url:
-    url: "{{ docker[ansible_distribution]['repo_url'] }}"
+    url: "{{ docker[ansible_facts.distribution]['repo_url'] }}"
     dest: /etc/yum.repos.d/docker-ce.repo
     mode: '0644'
 
@@ -31,7 +31,7 @@
   when: docker_os_release is defined
 
 - name: RHEL7
-  when: ansible_distribution_major_version | int == 7
+  when: ansible_facts.distribution_major_version | int == 7
   become: yes
   tags: molecule-idempotence-notest
   block:
@@ -53,7 +53,7 @@
         loop_var: package
 
 - name: RHEL8+/Fedora
-  when: ansible_distribution_major_version | int >= 8
+  when: ansible_facts.distribution_major_version | int >= 8
   tags: molecule-idempotence-notest
   become: yes
   block:
