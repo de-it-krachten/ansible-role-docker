@@ -205,7 +205,7 @@ docker_arch_mapping:
 # -------------------------------------------------
 
 # Lookup the value we need for Debian/apt
-docker_apt_arch: "{{ docker_arch_mapping[ansible_architecture] }}"
+docker_apt_arch: "{{ docker_arch_mapping[ansible_facts.architecture] }}"
 
 # Docker release channel
 docker_apt_release_channel: stable
@@ -307,11 +307,21 @@ docker_packages_prereqs: []
     docker_vg: dockervg
     docker_pv: /dev/sdb
     docker_root: /export/docker
-    docker_lvm_setup: '{''vg'': [{''name'': ''{{ docker_vg }}'', ''pv'': ''{{ docker_pv
-      }}''}], ''lv'': [{''name'': ''lv_docker'', ''vg'': ''{{ docker_vg }}'', ''size'':
-      ''10G'', ''mp'': ''/var/lib/docker'', ''fstype'': ''xfs''}, {''name'': ''lv_docker_data'',
-      ''vg'': ''{{ docker_vg }}'', ''size'': ''10G'', ''mp'': ''{{ docker_root }}'',
-      ''fstype'': ''xfs''}]}'
+    docker_lvm_setup:
+      vg:
+        - name: '{{ docker_vg }}'
+          pv: '{{ docker_pv }}'
+      lv:
+        - name: lv_docker
+          vg: '{{ docker_vg }}'
+          size: 10G
+          mp: /var/lib/docker
+          fstype: xfs
+        - name: lv_docker_data
+          vg: '{{ docker_vg }}'
+          size: 10G
+          mp: '{{ docker_root }}'
+          fstype: xfs
   tasks:
     - name: Include role 'docker'
       ansible.builtin.include_role:
