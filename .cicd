@@ -1162,25 +1162,14 @@ github:
   # https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html
   image: ubuntu2204
   lint_matrix:
-# 2.16 is latest version to supports python3.6 (rhel8)
+# Supported versions are N and N-1
+# Only deviation is 2.16, as it is the latest version to support python3.6 (RHEL8)
     - name: ansible_2.16
       ansible: "ansible>9,<10"
       ansible_core: "ansible-core>2.16,<2.17"
       ansible_lint: "ansible-lint"
       python: "3.12"
       venv: "ansiblecore216"
-    - name: ansible_2.18
-      ansible: "ansible>11,<12"
-      ansible_core: "ansible-core>2.18,<2.19"
-      ansible_lint: "ansible-lint"
-      python: "3.12"
-      venv: "ansiblecore218"
-    - name: ansible_2.19
-      ansible: "ansible>12,<13"
-      ansible_core: "ansible-core>2.19,<2.20"
-      ansible_lint: "ansible-lint"
-      python: "3.12"
-      venv: "ansiblecore219"
     - name: ansible_2.20
       ansible: "ansible>13,<14"
       ansible_core: "ansible-core>2.20,<2.21"
