@@ -18,6 +18,7 @@ platforms:
 
 # Molecule
 molecule:
+  driver: docker
   prepare:
     vars:
       activate_epel: true
