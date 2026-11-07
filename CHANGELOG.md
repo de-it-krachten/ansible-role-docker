@@ -1,3 +1,10 @@
+## [1.17.1](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.17.0...v1.17.1) (2026-11-07)
+
+
+### Bug Fixes
+
+* Add iptable-nft for RedHat family (9+) ([4cea22d](https://github.com/de-it-krachten/ansible-role-docker/commit/4cea22d265f0333f247b2b0c9635888471221432))
+
 # [1.17.0](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.16.0...v1.17.0) (2026-10-10)
 
 
