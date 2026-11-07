@@ -74,6 +74,19 @@
       loop_control:
         loop_var: package
 
+    - name: Install Docker (RHEL8+/Fedora)
+      ansible.builtin.dnf:
+        name: iptables-nft
+        state: present
+      when: ansible_facts.distribution_major_version | int >= 9
+
+    - name: Register iptables-nft as an alternative
+      community.general.alternatives:
+        name: iptables
+        path: /usr/sbin/iptables-nft
+        link: /usr/sbin/iptables
+      when: ansible_facts.distribution_major_version | int >= 9
+
 - name: Start Docker service
   ansible.builtin.service:
     name: docker
