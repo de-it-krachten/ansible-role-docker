@@ -10,17 +10,17 @@ docker:
     repo_url: https://download.docker.com/linux/centos/docker-ce.repo
     gpg_key: https://download.docker.com/linux/centos/gpg
   RedHat:
-    repo_url: https://download.docker.com/linux/centos/docker-ce.repo
-    gpg_key: https://download.docker.com/linux/centos/gpg
+    repo_url: https://download.docker.com/linux/rhel/docker-ce.repo
+    gpg_key: https://download.docker.com/linux/rhel/gpg
   OracleLinux:
-    repo_url: https://download.docker.com/linux/centos/docker-ce.repo
-    gpg_key: https://download.docker.com/linux/centos/gpg
+    repo_url: https://download.docker.com/linux/oracle/docker-ce.repo
+    gpg_key: https://download.docker.com/linux/oracle/gpg
   Rocky:
-    repo_url: https://download.docker.com/linux/centos/docker-ce.repo
-    gpg_key: https://download.docker.com/linux/centos/gpg
+    repo_url: https://download.docker.com/linux/rocky/docker-ce.repo
+    gpg_key: https://download.docker.com/linux/rocky/gpg
   AlmaLinux:
-    repo_url: https://download.docker.com/linux/centos/docker-ce.repo
-    gpg_key: https://download.docker.com/linux/centos/gpg
+    repo_url: https://download.docker.com/linux/alma/docker-ce.repo
+    gpg_key: https://download.docker.com/linux/alma/gpg
   Fedora:
     repo_url: https://download.docker.com/linux/fedora/docker-ce.repo
     gpg_key: https://download.docker.com/linux/fedora/gpg
