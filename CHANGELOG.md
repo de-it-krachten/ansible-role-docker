@@ -1,3 +1,10 @@
+## [1.17.2](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.17.1...v1.17.2) (2026-11-27)
+
+
+### Bug Fixes
+
+* Point each RedHat-family member to the proper repo ([5796931](https://github.com/de-it-krachten/ansible-role-docker/commit/5796931f7186de5a647f7e3406900219fb76c9cf))
+
 ## [1.17.1](https://github.com/de-it-krachten/ansible-role-docker/compare/v1.17.0...v1.17.1) (2026-11-07)
 
 
